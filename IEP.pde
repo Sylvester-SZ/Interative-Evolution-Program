@@ -1,3 +1,7 @@
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.IOException;
+
 void setup() {
   size(600, 400);
   blocks = new Block[3];

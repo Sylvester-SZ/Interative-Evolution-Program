@@ -1,0 +1,6 @@
+
+Table algoritme_kamp(){
+  
+  
+  
+}

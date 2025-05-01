@@ -1,4 +1,5 @@
 Algoritmer[] algoritmer = new Algoritmer[4]; //laver et array til algoritmerne
+ TabelVisualisering nytabel;
 
 void setup() {
 
@@ -9,10 +10,10 @@ void setup() {
   algoritmer[3] = copycat;
 
   //lav tabel med resultater
-  resultater.addColumn("Spiller1");
-  resultater.addColumn("Spiller2");
-  resultater.addColumn("Spiller1Valg");
-  resultater.addColumn("Spiller2Valg");
+  resultater.addColumn("Spiller 1");
+  resultater.addColumn("Spiller 2");
+  resultater.addColumn("Spiller 1 Valg");
+  resultater.addColumn("Spiller 2 Valg");
 
   for (int i = 0; i < 15; i++) {
 
@@ -27,13 +28,23 @@ void setup() {
 
  koerTabel(); //kører tabellen
   
- TabelVisualisering nytabel= new TabelVisualisering (500,500, 1000, 500, floor(random(10,16)), 3,250,40);
+ nytabel = new TabelVisualisering (width/10, height/8, width-width/10*2, height-height/8*2, floor(random(10,16)), 3,250,40);
  //TabelVisualisering nytabel= new TabelVisualisering (500,500, 500, 250, floor(random(10,16)), 5,125,20);
  
  //nytabel.indsaetDataTabel();
  
- nytabel.tabelVisuel();
+
  
  fullScreen();
  
+}
+
+void draw(){} //mouse released interrupter draw funktionen så uden den fungere mouse released ikke
+
+void mouseReleased(){
+  
+ tjekAlgoritmeKnapper(); //tjekker om der trykkes på algoritmeknapperne
+ 
+  nytabel.tabelVisuel();
+  
 }

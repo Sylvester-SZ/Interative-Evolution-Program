@@ -1,17 +1,17 @@
 void mousePressed() {
-  for (Block b : blocks) {
-    b.checkMousePressed();
+  for (int i = 0; i < blocks.size(); i++) {
+    blocks.get(i).checkMousePressed();
   }
 }
 
 void mouseDragged() {
-  for (Block b : blocks) {
-    b.checkMouseDragged();
+  for (int i = 0; i < blocks.size(); i++) {
+    blocks.get(i).checkMouseDragged();
   }
 }
 
 void mouseReleased() {
-  for (Block b : blocks) {
-    b.checkMouseReleased();
+  for (int i = 0; i < blocks.size(); i++) {
+    blocks.get(i).checkMouseReleased();
   }
 }

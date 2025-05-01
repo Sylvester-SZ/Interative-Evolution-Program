@@ -4,4 +4,5 @@ void setup() {
   println("Defect");
   println("Cooperate");
   println("Repeat last action");
+  println("Defect");
 }

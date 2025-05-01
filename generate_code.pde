@@ -31,14 +31,14 @@ void generateCode() {
   String[] header = { "void setup() {", "  size(400, 400);", "  background(220);" };
   String[] footer = { "}" };
 
-  String[] body = new String[blocks.length];
+  String[] body = new String[blocks.size()];
 
-  for (int i = 0; i < blocks.length; i++) {
-    if (blocks[i].label.equals("Defect")) {
+  for (int i = 0; i < blocks.size(); i++) {
+    if (blocks.get(i).label.equals("Defect")) {
       body[i] = "  println(\"Defect\");";
-    } else if (blocks[i].label.equals("Cooperate")) {
+    } else if (blocks.get(i).label.equals("Cooperate")) {
       body[i] = "  println(\"Cooperate\");";
-    } else if (blocks[i].label.equals("Repeat")) {
+    } else if (blocks.get(i).label.equals("Repeat")) {
       body[i] = "  println(\"Repeat last action\");";
     }
   }

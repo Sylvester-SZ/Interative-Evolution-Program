@@ -2,15 +2,17 @@ class Block {
   float x, y, w, h;
   String label;
   boolean dragging = false;
-  boolean dragged;
+  boolean picker;
+  int catagory;
 
-  Block(float x, float y, String label, boolean dragged) {
+  Block(float x, float y, String label, boolean picker, int catagory) {
     this.x = x;
     this.y = y;
     this.w = 120;
     this.h = 40;
     this.label = label;
-    this.dragged = dragged;
+    this.picker = picker;
+    this.catagory = catagory;
   }
 
   void display() {
@@ -23,25 +25,38 @@ class Block {
 
   void checkMousePressed() {
     if (mouseX > x && mouseX < x + w && mouseY > y && mouseY < y + h) {
-      dragging = true;
+      if (!picker) {
+        dragging = true;
+      } else {
+
+        blocks.add(new Block(x+150, y, label, false, 1));
+      }
     }
   }
 
   void checkMouseDragged() {
-    if (!original) {
-      if (dragging) {
-        x = mouseX - w / 2;
-        y = mouseY - h / 2;
-      }
-    } else{
-      
+    if (dragging) {
+      x = mouseX - w / 2;
+      y = mouseY - h / 2;
     }
-    }
+  }
 
-    void checkMouseReleased() {
-      dragging = false;
+  void checkMouseReleased() {
+    dragging = false;
+    if (mouseX > x && mouseX < x + w && mouseY > y && mouseY < y + h) {
+      for (int i = 0; i < blocks.size(); i++) {
+        float xb = blocks.get(i).x;
+        float yb = blocks.get(i).y;
+        float wb = blocks.get(i).w;
+        float hb = blocks.get(i).h;
+        if (mouseX > xb && mouseX < xb + wb && mouseY > yb+hb && mouseY < yb + hb *2 && blocks.get(i).picker==false) {
+          //println("andet tjek " + i);
+          x = blocks.get(i).x;
+          y= blocks.get(i).y+blocks.get(i).h;
+        }
+      }
     }
+  }
 }
 
-Block[] blocks;
 String[] codeLines;

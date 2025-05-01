@@ -2,16 +2,19 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
 
+ArrayList<Block> blocks = new ArrayList<Block>();
+
 void setup() {
-  size(600, 400);
-  blocks = new Block[3];
-  blocks[0] = new Block(100, 100, "Defect");
-  blocks[1] = new Block(100, 160, "Cooperate");
-  blocks[2] = new Block(100, 220, "Repeat");
+  fullScreen();
+
+  blocks.add(new Block(100, 100, "Defect", true, 1));
+  blocks.add(new Block(100, 160, "Cooperate", true, 1));
+  blocks.add(new Block(100, 220, "Repeat", true, 1));
 }
+
 void draw() {
   background(220);
-  for (Block b : blocks) {
-    b.display();
+  for (int i = 0; i < blocks.size(); i++) {
+    blocks.get(i).display();
   }
 }

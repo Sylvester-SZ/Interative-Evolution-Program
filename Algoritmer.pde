@@ -31,7 +31,7 @@ class Algoritmer {  //klassen der opbevarer vores algoritmer
 
 
 
-/*=======================================ny algoritme=============================================*/
+/*======================================= ny algoritme =============================================*/
 
 
 
@@ -87,7 +87,7 @@ class DumAlgoritme extends Algoritmer {  //en algoritme der aldrig samarbejder
 
 
 
-/*=======================================ny algoritme=============================================*/
+/*======================================= ny algoritme =============================================*/
 
 
 
@@ -141,7 +141,7 @@ class Copycat extends Algoritmer {  //en algoritme der gør hvad modstanderen gj
       resultat = true;   //samarbejd
     } else if (spiller1) { //ellers hvis de er spiller 1
 
-        if (boolean(resultater.getInt(runde-1, 1))) { //tjek modstanderens sidste træk i tabellen
+        if (boolean(resultater.getInt(runde-1, 3))) { //tjek modstanderens sidste træk i tabellen
 
           resultat = true; //hvis de samarbejdede så samarbejd
         } else {
@@ -150,7 +150,7 @@ class Copycat extends Algoritmer {  //en algoritme der gør hvad modstanderen gj
         }
       } else { //hvis de er spiller 2
 
-        if (boolean(resultater.getInt(runde-1, 0))) { //tjek spiller 1 sidste træk
+        if (boolean(resultater.getInt(runde-1, 2))) { //tjek spiller 1 sidste træk
 
           //gør det samme som de gjorde
 

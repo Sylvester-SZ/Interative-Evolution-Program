@@ -53,13 +53,12 @@ class TabelVisualisering {
       text("Runde:",xposTabel+(bredde1steRaekke/2),yposTabel+(1*(sizeyTabel/antalRaekker)/2));//tekst til rows i tabel
       text("Spiller 1",xposTabel+(bredde1steRaekke/2),yposTabel+(3*(sizeyTabel/antalRaekker)/2));//tekst til rows i tabel
       text("Spiller 2",xposTabel+(bredde1steRaekke/2),yposTabel+(5*(sizeyTabel/antalRaekker)/2));//tekst til rows i tabel
-      text("Spiller 1 valg",xposTabel+(bredde1steRaekke/2),yposTabel+(7*(sizeyTabel/antalRaekker)/2));//tekst til rows i tabel
-      text("Spiller 2 valg",xposTabel+(bredde1steRaekke/2),yposTabel+(9*(sizeyTabel/antalRaekker)/2));//tekst til rows i tabel
+      //text("Spiller 1 valg",xposTabel+(bredde1steRaekke/2),yposTabel+(7*(sizeyTabel/antalRaekker)/2));//tekst til rows i tabel
+      //text("Spiller 2 valg",xposTabel+(bredde1steRaekke/2),yposTabel+(9*(sizeyTabel/antalRaekker)/2));//tekst til rows i tabel
       
       j=j+1;
     }
 
-    println(antalSildeben);
   }
 
   void indsaetDataTabel() {
@@ -70,5 +69,11 @@ class TabelVisualisering {
     
     text(sildeben.getInt(0, "Spiller 1"),550,550);
     
+    int l=0;
+    while (l<antalRaekker+1) { //her indtegnes værdierne fra tabellen
+      //float y = yposTabel + l*sizeyTabel/antalRaekker;
+      
+      
+    }
   }
 }

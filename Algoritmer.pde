@@ -2,31 +2,37 @@ boolean resultat;  //det sidste resultat der er udregnet
 int runde = 0;  // hvilken runde vi er på
 
 //lav alle algoritme objekterne
-  SoedAlgoritme soedAlgoritme = new SoedAlgoritme();
-  DumAlgoritme dumAlgoritme = new DumAlgoritme();
-  Random random = new Random();
-  Copycat copycat = new Copycat();
+SoedAlgoritme soedAlgoritme = new SoedAlgoritme();
+OndAlgoritme ondAlgoritme = new OndAlgoritme();
+Random random = new Random();
+Copycat copycat = new Copycat();
 
 class Algoritmer {  //klassen der opbevarer vores algoritmer
 
-  boolean soed;  //er algoritmen sød (starter den med at samarbejde)
+  String navn; //navnet på algoritmen
+  boolean soed; //om algoritmen er soed i første runde
 
   Algoritmer() {
 
     //alt der skal være i construkteren
   }
+  
+    boolean spil(Table resultater, boolean spiller1) { //metoder der finder ud af hvad en algoritme vil gøre
 
-  boolean spil(Table resultater, boolean spiller1) { //tabel med tidligere resulater til hvis algortimen bruger dette og om algortimen er spiller 1 eller 2 i tabellen med resultater for at hvide om det eksempelvis var dem selv eller modstanderen der var ond sidste gang
+return (resultat); //returnere hvad den fandt ud af
+    }
+    
+      boolean erSoed() {
 
-    //den logik der skal stå for at returnere et resultat i form af at samarbejde eller ej
-
-    return(resultat);  //resultatet der returneres
+    return (soed);
   }
+  
+    String navn() {
 
-  boolean erSoed() {
-
-    return(soed);
+    return (navn);
+    
   }
+  
 }
 
 
@@ -37,10 +43,9 @@ class Algoritmer {  //klassen der opbevarer vores algoritmer
 
 class SoedAlgoritme extends Algoritmer {  //en algoritme der altid er sød
 
-  boolean soed;
-
   SoedAlgoritme () {
 
+    navn = "Sød algoritme";
     soed = true;  //den er som sagt sød
   }
 
@@ -53,7 +58,13 @@ class SoedAlgoritme extends Algoritmer {  //en algoritme der altid er sød
 
   boolean erSoed() {
 
-    return super.erSoed();
+    return (soed);
+  }
+
+  String navn() {
+
+    return (navn);
+    
   }
 }
 
@@ -63,12 +74,11 @@ class SoedAlgoritme extends Algoritmer {  //en algoritme der altid er sød
 
 
 
-class DumAlgoritme extends Algoritmer {  //en algoritme der aldrig samarbejder
+class OndAlgoritme extends Algoritmer {  //en algoritme der aldrig samarbejder
 
-  boolean soed;
+  OndAlgoritme () {
 
-  DumAlgoritme () {
-
+    navn = "Ond algoritme";
     soed = false;  //den er som sagt ikke sød
   }
 
@@ -81,7 +91,12 @@ class DumAlgoritme extends Algoritmer {  //en algoritme der aldrig samarbejder
 
   boolean erSoed() {
 
-    return super.erSoed();
+    return (soed);
+  }
+
+  String navn() {
+
+    return (navn);
   }
 }
 
@@ -93,10 +108,9 @@ class DumAlgoritme extends Algoritmer {  //en algoritme der aldrig samarbejder
 
 class Random extends Algoritmer {  //en algoritme der samarbejder tilfældigt
 
-  boolean soed;
-
   Random () {
 
+    navn = "Tilfældig algoritme";
     soed = true;  //den vil ikke (nødvendigvis) gå efter at samarbejde i første runde
   }
 
@@ -115,7 +129,12 @@ class Random extends Algoritmer {  //en algoritme der samarbejder tilfældigt
 
   boolean erSoed() {
 
-    return super.erSoed();
+    return (soed);
+  }
+
+  String navn() {
+
+    return (navn);
   }
 }
 
@@ -127,10 +146,9 @@ class Random extends Algoritmer {  //en algoritme der samarbejder tilfældigt
 
 class Copycat extends Algoritmer {  //en algoritme der gør hvad modstanderen gjorde sidst
 
-  boolean soed;
-
   Copycat() {
 
+    navn = "Copycat";
     soed = true;  //den starter med at være sød fordi modstanderen ikke har gjort noget endnu
   }
 
@@ -141,31 +159,36 @@ class Copycat extends Algoritmer {  //en algoritme der gør hvad modstanderen gj
       resultat = true;   //samarbejd
     } else if (spiller1) { //ellers hvis de er spiller 1
 
-        if (boolean(resultater.getInt(runde-1, 3))) { //tjek modstanderens sidste træk i tabellen
+      if (boolean(resultater.getInt(runde-1, 3))) { //tjek modstanderens sidste træk i tabellen
 
-          resultat = true; //hvis de samarbejdede så samarbejd
-        } else {
+        resultat = true; //hvis de samarbejdede så samarbejd
+      } else {
 
-          resultat = false; // ellers lad vær
-        }
-      } else { //hvis de er spiller 2
-
-        if (boolean(resultater.getInt(runde-1, 2))) { //tjek spiller 1 sidste træk
-
-          //gør det samme som de gjorde
-
-          resultat = true;
-        } else {
-
-          resultat = false;
-        }
+        resultat = false; // ellers lad vær
       }
+    } else { //hvis de er spiller 2
 
-      return(resultat);
+      if (boolean(resultater.getInt(runde-1, 2))) { //tjek spiller 1 sidste træk
+
+        //gør det samme som de gjorde
+
+        resultat = true;
+      } else {
+
+        resultat = false;
+      }
     }
 
-    boolean erSoed() {
-
-      return super.erSoed();
-    }
+    return(resultat);
   }
+
+  boolean erSoed() {
+
+    return (soed);
+  }
+
+  String navn() {
+
+    return (navn);
+  }
+}

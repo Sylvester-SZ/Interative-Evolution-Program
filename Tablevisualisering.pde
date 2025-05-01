@@ -13,8 +13,8 @@ void koerTabel(){
  
  sildeben.setInt(0,"Spiller 1",5);
  sildeben.setInt(0,"Spiller 2",0);
- sildeben.setInt(0,"Spiller 1",1);
- sildeben.setInt(0,"Spiller 2",0);
+ sildeben.setInt(0,"Spiller 1 valg",1);
+ sildeben.setInt(0,"Spiller 2 valg",0);
  
  println(sildeben.getInt(0, "Spiller 1"));
  println(sildeben.getInt(0,"Spiller 2"));

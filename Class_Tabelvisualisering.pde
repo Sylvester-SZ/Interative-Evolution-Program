@@ -1,11 +1,11 @@
 
 
 class TabelVisualisering {
-  int xposTabel, yposTabel, sizexTabel, sizeyTabel; //variabler der bruges til at angive x og y pos af tabel og størrelsen i x og y af tabel
-  int antalSildeben; //giver et random antal felter
-  int antalRaekker=4, txtSize;
-  int bredde1steRaekke;
-  TabelVisualisering (int x, int y, int strx, int stry, int sildeben, int raekker,int bredRaek1, int txt) {
+  float xposTabel, yposTabel, sizexTabel, sizeyTabel; //variabler der bruges til at angive x og y pos af tabel og størrelsen i x og y af tabel
+  float antalSildeben; //giver et random antal felter
+  float antalRaekker=4, txtSize;
+  float bredde1steRaekke;
+  TabelVisualisering (float x, float y, float strx, float stry, int sildeben, int raekker,float bredRaek1, float txt) {
 
     xposTabel=x;
     yposTabel=y;

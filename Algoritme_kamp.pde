@@ -30,5 +30,5 @@ void algoritme_kamp(int algoritme1, int algoritme2) { //kan laves til at returne
     runde++; //næste runde
   }
 
-  runde = 0; //når algoritmerne hr kørt resettes runden
+  runde = 0; //når algoritmerne har kørt resettes runden
 }

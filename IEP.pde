@@ -27,11 +27,33 @@ void setup() {
   saveTable(resultater, "data/resultater.HTML"); //tjek resultaterne uden at skulle lave visuelt til skærm så det er nemmere at debugge
    koerTabel(); //kører tabellen
   
- TabelVisualisering nytabel= new TabelVisualisering (500,500, 1000, 500, floor(random(10,16)), 3,250,40);
+ TabelVisualisering nytabel= new TabelVisualisering (width/4,height/4, width/2.2, height/4, floor(random(10,16)), 3,width/8,height/25); //laver en fysisk tabel på skærmen ud fra class Tabelvisualisering
  //TabelVisualisering nytabel= new TabelVisualisering (500,500, 500, 250, floor(random(10,16)), 5,125,20);
  
  //nytabel.indsaetDataTabel();
  
  nytabel.tabelVisuel();
+  
+  fullScreen();
+  
+}
+
+void draw(){
+ 
+  SkaermState = 1;
+  
+  if(SkaermState == 0){
+     SplashScreen();
+  }
+  if(SkaermState == 1){
+     StartSkaerm();
+  }
+  if(SkaermState == 2){
+     AlgoritmeSkaerm();
+  }
+  if(SkaermState == 3){
+     BygSelvSkaerm();
+  }
+  
   
 }

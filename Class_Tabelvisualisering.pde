@@ -27,8 +27,8 @@ class TabelVisualisering {
   
   void tabelVisuel() { //viser tabellens felter på skærmen
 
-    stroke(70, 70, 70); //giver farve til linjerne i sildebenet
-    fill(80, 80, 80); //giver farve til karaktererne i skemaet
+    stroke(70); //giver farve til linjerne i sildebenet
+    fill(80); //giver farve til karaktererne i skemaet
     textAlign(CENTER, CENTER);
     strokeWeight(5);
     textSize(txtSize);
@@ -75,7 +75,7 @@ while (s<antalSildeben){
      fill(80, 80, 80); //giver farve til karaktererne i skemaet
      
      if((resultater.getInt(s, "Spiller 1")==3 || (resultater.getInt(s, "Spiller 1")==0))){
-       fill(0,255,0);
+       fill(100,255,100);
        text(resultater.getInt(s, "Spiller 1"),x+bredde1steRaekke+sizexTabel/antalSildeben/2, yposTabel+(3*(sizeyTabel/antalRaekker)/2));  
      } else{
        fill(255,0,0);

@@ -91,6 +91,9 @@ void draw() { //mouse released interrupter draw funktionen så uden den fungere 
   case 4:
     ResultatSkaerm();
     break;
+  case 5:
+    GodeRaedSkaerm();
+    break;
   }
 }
 
@@ -109,36 +112,23 @@ void mouseReleased() {
 
   if (hitbox(width/7, height/1.4, width/5, height/5, 0)) {
     skaermState = 3;
-    fill(255);
-    textSize(20);
-    text("Hjemmeskaerm", 0, 0);
-    fill(0);
   }
   if (hitbox(0, 0, width/14, height/14, 1)) {
     skaermState = 0;
-    textSize(20);
-    fill(255);
-    text("Hjemmeskaerm", 0, 0);
-    fill(0);
   }
   if (hitbox(0, 0, width/14, height/14, 2)) {
     skaermState = 0;
-    fill(255);
-    text("Hjemmeskaerm", 0, 0);
-    fill(0);
   }
   if (hitbox(0, 0, width/14, height/14, 3)) {
     skaermState = 0;
-    textSize(20);
-    fill(255);
-    text("Hjemmeskaerm", 0, 0);
-    fill(0);
   }
   if (hitbox(0, 0, width/14, height/14, 4)) {
     skaermState = 0;
-    textSize(20);
-    fill(255);
-    text("Hjemmeskaerm", 0, 0);
-    fill(0);
+  }
+  if (hitbox(0, 0, width/14, height/14, 5)) {
+    skaermState = 0;
+  }
+  if (hitbox(width-width/14, 0, width/14, height/14, 4)) {
+    skaermState = 5;
   }
 }

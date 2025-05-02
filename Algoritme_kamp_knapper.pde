@@ -31,15 +31,15 @@ saveTable(resultater, "data/resultater.HTML"); //tjek resultaterne uden at skull
 
 void tegnAlgoritmeKnapper() {
 
-  //sætter nogle visuelle ting
-  stroke(70, 70, 70);
-  fill(80, 80, 80);
+  // =================================== sætter nogle visuelle ting ===================================================================================================================
+  stroke(70);
+  fill(80);
   textAlign(CENTER, CENTER);
   strokeWeight(5);
 
   for (int i = 0; i < algoritmer.length; i++) {
     
-    //nedenstående tegner knapperne i venstre side
+    // ======================================================= nedenstående tegner knapperne i venstre side på skærmen AlgoritmeSkaerm(); som har nr. 2 ====================================
     if (valgtAlgoritme1 == i) { //hvis dette er den valgte algortime
 
       fill(100, 255, 100); //sæt farven til grøn
@@ -50,7 +50,7 @@ void tegnAlgoritmeKnapper() {
     rect(width/20, height/10 * (i+1) + height/30 * i, width/10, height/10, 10); //tegn knappen
 
 
-    //tegn teksten til algoritme knapperne
+    // ======================================================================= tegn teksten til algoritme knapperne ===========================================================================
     fill(50);
     textSize(height/60);
     text(algoritmer[i].navn, width/20 + width/80, height/10 * (i + 1) + height/30 * i + height/40, width/10 - 2 * width/80, height/10 - 2 * height/40);

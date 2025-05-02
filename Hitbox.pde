@@ -1,6 +1,6 @@
 // Kode er fundet i tidligere projekt
 
-boolean hitbox(float x0, float y0, float x1, float  y1, int reqskaerm) {
+boolean hitbox(float x0, float y0, float x1, float  y1, int reqskaerm) { //koden her laver hitboxes til knapperne i vores program
   float tolerance = 6;
   x0 = x0- tolerance;
   y0 = y0- tolerance;

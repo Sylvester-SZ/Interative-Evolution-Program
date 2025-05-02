@@ -27,33 +27,6 @@ boolean canRunProcessingJava() {
   return false;
 }
 
-String generateCondition(Block value1, Block operator, Block value2) {
-  // Convert value blocks to appropriate code
-  String val1 = getValueCode(value1);
-  String val2 = getValueCode(value2);
-  String op = operator.label;
-  
-  return val1 + " " + op + " " + val2;
-}
-
-String getValueCode(Block valueBlock) {
-  if (valueBlock.label.contains("x")) {
-    // Number block - extract the number
-    return String.valueOf(valueBlock.getNumericValue());
-  } else if (valueBlock.label.equalsIgnoreCase("i")) {
-    // Loop iterator reference
-    return "i";
-  } else {
-    try {
-      // Try parsing as a direct number
-      Integer.parseInt(valueBlock.label);
-      return valueBlock.label;
-    } catch (NumberFormatException e) {
-      // Not a number - could be a variable or other identifier
-      return valueBlock.label;
-    }
-  }
-}
 
 void generateCode() {
   ArrayList<String> result = new ArrayList<String>();
@@ -79,7 +52,7 @@ void generateCode() {
   saveStrings("generated_code/generated_code.pde", result.toArray(new String[0]));
 }
 
-// Improved block code generator with better handling of parent-child relationships
+
 String generateBlockCode(Block block, int indentLevel) {
   if (block.picker) {
     return "";
@@ -95,44 +68,8 @@ String generateBlockCode(Block block, int indentLevel) {
   } else if (block.label.equals("Defect")) {
     codeBuilder.append(indent + "delay(100);\n");
     codeBuilder.append(indent + "background(color(255, 0, 0));");
-  } else if (block.label.equals("If")) {
-    // Process If statement with connected blocks
-    if (block.connectedBlocks.size() >= 3) {
-      // We need at least 3 blocks: value1, operator, value2
-      Block value1 = block.connectedBlocks.get(0);
-      Block operator = block.connectedBlocks.get(1);
-      Block value2 = block.connectedBlocks.get(2);
-      
-      // Generate condition based on blocks
-      String condition = generateCondition(value1, operator, value2);
-      codeBuilder.append(indent + "if (" + condition + ") {");
-      
-      // Process execution blocks (blocks after the condition)
-      if (block.connectedBlocks.size() > 3) {
-        codeBuilder.append("\n");
-        for (int i = 3; i < block.connectedBlocks.size(); i++) {
-          Block execBlock = block.connectedBlocks.get(i);
-          codeBuilder.append(generateBlockCode(execBlock, indentLevel + 1)).append("\n");
-        }
-        codeBuilder.append(indent);
-      }
-      
-      // Process child blocks (blocks below if) as ELSE clause
-      ArrayList<Block> children = block.getChildBlocks();
-      if (!children.isEmpty()) {
-        codeBuilder.append("\n" + indent + "} else {");
-        codeBuilder.append("\n");
-        for (Block child : children) {
-          codeBuilder.append(generateBlockCode(child, indentLevel + 1)).append("\n");
-        }
-        codeBuilder.append(indent);
-      }
-      
-      codeBuilder.append("}");
-    } else {
-      codeBuilder.append(indent + "// Incomplete If statement - needs value1, operator, value2");
-    }
-  } else if (block.label.startsWith("Repeat")) { //Repeatfunktionen er lavet ved hjælp af AI
+  } else if (block.label.startsWith("Repeat")) {
+    // Get all children blocks for this Repeat block
     ArrayList<Block> children = block.getChildBlocks();
     
     // Determine repeat count - use first child's numeric value if available

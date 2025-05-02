@@ -5,7 +5,7 @@ class Block {
   boolean picker;
   int catagory;
   Block parent;
-  ArrayList<Block> connectedBlocks;
+
 
   Block(float x, float y, String label, boolean picker, int catagory) {
     this.x = x;

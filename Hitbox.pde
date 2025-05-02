@@ -1,7 +1,7 @@
 // FØLGENDE KODE ER TYVSTJÅLET FRA ET TIDLIGERE PROJEKT
 
-boolean hitbox(int x0, int y0, int x1, int y1, int reqskaerm) {
-  int tolerance = 6;
+boolean hitbox(float x0, float y0, float x1, float  y1, int reqskaerm) {
+  float tolerance = 6;
   x0 = x0- tolerance;
   y0 = y0- tolerance;
   x1 = x1+x0+tolerance;

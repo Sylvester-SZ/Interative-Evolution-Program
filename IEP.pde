@@ -65,5 +65,43 @@ background(190);
 void mouseReleased(){
   
  tjekAlgoritmeKnapper(); //tjekker om der trykkes på algoritmeknapperne
-  
+ 
+ if(hitbox(width/1.6,height/1.4,width/5, height/5,0)){
+ skaermState = 2; 
+ }
+ 
+ if(hitbox(width/7,height/1.4,width/5, height/5,0)){
+ skaermState = 3; 
+ fill(255);
+ textSize(20);
+ text("Hjemmeskaerm",0,0);
+ fill(0);
+ }
+ if(hitbox(0,0,width/14, height/14,1)){
+ skaermState = 0; 
+ textSize(20);
+ fill(255);
+ text("Hjemmeskaerm",0,0);
+ fill(0);
+ }
+ if(hitbox(0,0,width/14, height/14,2)){
+ skaermState = 0; 
+ fill(255);
+ text("Hjemmeskaerm",0,0);
+ fill(0);
+ }
+ if(hitbox(0,0,width/14, height/14,3)){
+ skaermState = 0;
+ textSize(20);
+ fill(255);
+ text("Hjemmeskaerm",0,0);
+ fill(0);
+ }
+ if(hitbox(0,0,width/14, height/14,4)){
+ skaermState = 0; 
+ textSize(20);
+ fill(255);
+ text("Hjemmeskaerm",0,0);
+ fill(0);
+ }
 }

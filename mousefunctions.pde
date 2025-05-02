@@ -48,7 +48,7 @@ void mouseReleased() {
 
 void mousePressed() {
 
-  if (skaermState == 3) { //hvis den er på algoritme kamp skærmen
+  if (skaermState == algoritmeKampSkaerm) { //hvis den er på algoritme kamp skærmen
 
     if (mouseX < width/100 && mouseY > venstreScrollY && mouseY < venstreScrollY + height/25) { //hvis musen er over venstre scroll bar
 

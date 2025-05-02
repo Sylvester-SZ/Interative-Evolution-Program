@@ -203,7 +203,7 @@ Table resultater = new Table();  //tabel med resultaterne
 
 void algoritme_kamp(int algoritme1) { //kan laves til at returnere en tabel i stedet for at opdatere hvis man vil lave multithreading i en større evolutionssimulation
 
-  for (int i = 0; i < 12; i++) { //kør antallet af runder, eksempelvis 12
+  for (int i = 0; i < antalRunder; i++) { //kør antallet af runder, eksempelvis 12
 
     resultater.setInt(i, 2, int(bygselvspil(resultater))); //finder ud af hvad algoritmerne vil gøre i en given runde og sætter det i tabellen med resultater
 
@@ -359,8 +359,10 @@ void koerTabel(){
  
 }
 int algo;
+int antalRunder;
 void setup(){
-  nytabel = new TabelVisualisering (width/6, height/8, width-width/6*2, height/5, floor(random(10, 16)), 3, 250, 40);
+  antalRunder = floor(random(10,16));
+  nytabel = new TabelVisualisering (width/6, height/8, width-width/6*2, height/5, antalRunder, 3, 250, 40);
   koerTabel();
   fullScreen();
   algoritmer[0] = soedAlgoritme;

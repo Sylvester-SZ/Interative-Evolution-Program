@@ -1,5 +1,5 @@
 
-int skaermState = 0;
+int skaermState = 3;
 
 void SplashScreen(){
    

@@ -19,8 +19,7 @@ void tjekAlgoritmeKnapper() {
   
   //tjek testknappen
   if (hitbox(width/2 - width/5/2, height/60, width/5, height/10, algoritmeKampSkaerm)){
-   
-skaerm = 1; //sæt den til skærmen der viser resultater, som er 1  nu men nok ikke skal være det
+    
 skaermState = 1; //sæt den til skærmen der viser resultater, som er 1  nu men nok ikke skal være det
 
 algoritme_kamp(valgtAlgoritme1, valgtAlgoritme2);

@@ -30,7 +30,7 @@ class Block {
       if (!picker) {
         dragging = true;
       } else {
-        blocks.add(new Block(x+150, y, label, false, 1));
+        blocks.add(new Block(x+250, y, label, false, 1));
       }
     }
   }
@@ -128,7 +128,7 @@ class Block {
 
     return defaultValue;
   }
-  
+
   //Hjælpefunktion der returnere om en label er en af vores 2 varibler. Gør koden mere overskuelig
   boolean isVariable() {
     return label.equals("opponent") || label.equals("player");

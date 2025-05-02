@@ -76,6 +76,8 @@ void AlgoritmeSkaerm() {
 
 void BygSelvSkaerm() {
   background(220);
+  fill(190);
+  rect(0,0,width/10,height);
   for (int i = 0; i < blocks.size(); i++) {
     blocks.get(i).display();
   }

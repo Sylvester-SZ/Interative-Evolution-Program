@@ -6,6 +6,7 @@ class Block {
   boolean dragging = false;
   boolean picker;
   int catagory;
+  Block parent;
 
   Block(float x, float y, String label, boolean picker, int catagory) {
     this.x = x;
@@ -55,8 +56,23 @@ class Block {
           x = blocks.get(i).x;
           y= blocks.get(i).y+blocks.get(i).h;
         }
+        else if(mouseX > xb+wb && mouseX < xb + 2*wb && mouseY > yb && mouseY < yb + hb && blocks.get(i).picker==false){
+          x = blocks.get(i).x+blocks.get(i).w;
+          y= blocks.get(i).y;
+          parent = blocks.get(i);
+        }
+      }
+    
+    }
+  }
+  ArrayList<Block> getChildBlocks() {
+    ArrayList<Block> children = new ArrayList<Block>();
+    for (Block block : blocks) {
+      if (block.parent == this) {
+        children.add(block);
       }
     }
+    return children;
   }
 }
 

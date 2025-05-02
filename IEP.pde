@@ -9,7 +9,7 @@ void setup() {
 
   blocks.add(new Block(100, 400, "Defect", true, 1));
   blocks.add(new Block(100, 460, "Cooperate", true, 1));
-  blocks.add(new Block(100, 520, "Vælg: ", true, 1));
+  blocks.add(new Block(100, 520, "Repeat", true, 1));
 }
 
 void draw() {

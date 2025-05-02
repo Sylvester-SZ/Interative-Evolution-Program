@@ -28,27 +28,77 @@ boolean canRunProcessingJava() {
 }
 
 void generateCode() {
-  String[] header = { "void setup() {", "  size(400, 400);", "  background(220);" };
-  String[] footer = { "}" };
+  ArrayList<String> bodyLines = new ArrayList<String>();
 
-  String[] body = new String[blocks.size()];
-
-  for (int i = 0; i < blocks.size(); i++) {
-    if (blocks.get(i).label.equals("Defect") && !blocks.get(i).picker) {
-      body[i] = "  background(color(255,0,0));";
-    } else if (blocks.get(i).label.equals("Cooperate")&&!blocks.get(i).picker) {
-      body[i] = "  delay(100);";
-    } else if (blocks.get(i).label.equals("Repeat")&&!blocks.get(i).picker) {
-      body[i] = "  background(color(0,0,255));";
-    }
-    else if(blocks.get(i).picker){
-      body[i] = "";
+  for (Block block : blocks) {
+    if (!block.picker) {
+      bodyLines.add(generateBlockCode(block, 1));
     }
   }
 
-  // Samler alt til én fil
-  String[] fullCode = concat(concat(header, body), footer);
-  saveStrings("generated_code/generated_code.pde", fullCode);
+  ArrayList<String> result = new ArrayList<String>();
+  result.add("void setup() {");
+  result.add("  size(400, 400);");
+  result.add("  background(220);");
+
+  for (String line : bodyLines) {
+    result.add(line);
+  }
+
+  result.add("}");
+
+  saveStrings("generated_code/generated_code.pde", result.toArray(new String[0]));
+}
+
+String generateBlockCode(Block block, int indentLevel) {
+  if (block.picker) return ""; // Undgå utilsigtet kodegenerering
+
+  String indent = getIndent(indentLevel);
+
+  if (block.label.equals("Cooperate")) {
+    return indent + "delay(100);\n" + indent + "background(color(0, 255, 0));";
+  }
+
+  if (block.label.equals("Defect")) {
+    return indent + "delay(100);\n" + indent + "background(color(255, 0, 0));";
+  }
+
+  if (block.label.startsWith("Repeat")) {
+    int repeatCount = 1;
+    if (block.label.split(" ").length > 1) {
+      try {
+        repeatCount = Integer.parseInt(block.label.split(" ")[1].replace("x", ""));
+      } catch (Exception e) {
+        repeatCount = 1;
+      }
+    }
+
+    ArrayList<Block> children = block.getChildBlocks();
+    StringBuilder repeatCode = new StringBuilder();
+    repeatCode.append(indent + "for (int i = 0; i < " + repeatCount + "; i++) {\n");
+
+    for (Block child : children) {
+      if (!child.picker) {
+        repeatCode.append(generateBlockCode(child, indentLevel + 1) + "\n");
+      }
+    }
+
+    repeatCode.append(indent + "  // End Repeat\n");
+    repeatCode.append(indent + "}");
+
+    return repeatCode.toString();
+  }
+
+  return indent + "// Ukendt blok-type: " + block.label;
+}
+
+
+String getIndent(int indentLevel) {
+  StringBuilder indent = new StringBuilder();
+  for (int i = 0; i < indentLevel; i++) {
+    indent.append("  "); // 2 mellemrum pr. indryk
+  }
+  return indent.toString();
 }
 
 

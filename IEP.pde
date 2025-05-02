@@ -37,14 +37,71 @@ void setup() {
 
 void draw(){ //mouse released interrupter draw funktionen så uden den fungere mouse released ikke
 
+background(190);
+
 //følgende er visuelt til debugging, skal bygges ind i en state machine senere
-  nytabel.tabelVisuel();
-  tegnAlgoritmeKnapper();
+  
+  
+  switch(skaermState){
+   case 0:
+   SplashScreen();
+   break;
+   case 1:
+   StartSkaerm();
+   break;
+   case 2:
+   AlgoritmeSkaerm();
+   break;
+   case 3:
+   BygSelvSkaerm();
+   break;
+   case 4:
+   ResultatSkaerm();
+   break;
+  }
   
 }
 
 void mouseReleased(){
   
  tjekAlgoritmeKnapper(); //tjekker om der trykkes på algoritmeknapperne
-  
+ 
+ if(hitbox(width/1.6,height/1.4,width/5, height/5,0)){
+ skaermState = 2; 
+ }
+ 
+ if(hitbox(width/7,height/1.4,width/5, height/5,0)){
+ skaermState = 3; 
+ fill(255);
+ textSize(20);
+ text("Hjemmeskaerm",0,0);
+ fill(0);
+ }
+ if(hitbox(0,0,width/14, height/14,1)){
+ skaermState = 0; 
+ textSize(20);
+ fill(255);
+ text("Hjemmeskaerm",0,0);
+ fill(0);
+ }
+ if(hitbox(0,0,width/14, height/14,2)){
+ skaermState = 0; 
+ fill(255);
+ text("Hjemmeskaerm",0,0);
+ fill(0);
+ }
+ if(hitbox(0,0,width/14, height/14,3)){
+ skaermState = 0;
+ textSize(20);
+ fill(255);
+ text("Hjemmeskaerm",0,0);
+ fill(0);
+ }
+ if(hitbox(0,0,width/14, height/14,4)){
+ skaermState = 0; 
+ textSize(20);
+ fill(255);
+ text("Hjemmeskaerm",0,0);
+ fill(0);
+ }
 }

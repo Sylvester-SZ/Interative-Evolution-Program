@@ -7,9 +7,9 @@ ArrayList<Block> blocks = new ArrayList<Block>();
 void setup() {
   fullScreen();
 
-  blocks.add(new Block(100, 100, "Defect", true, 1));
-  blocks.add(new Block(100, 160, "Cooperate", true, 1));
-  blocks.add(new Block(100, 220, "Repeat", true, 1));
+  blocks.add(new Block(100, 400, "Defect", true, 1));
+  blocks.add(new Block(100, 460, "Cooperate", true, 1));
+  blocks.add(new Block(100, 520, "Vælg: ", true, 1));
 }
 
 void draw() {

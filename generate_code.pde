@@ -3,7 +3,7 @@ ArrayList<Float> heights = new ArrayList<Float>();
 boolean canRunProcessingJava() {
   try {
     Process process = Runtime.getRuntime().exec("processing-java --version");
-    process.waitFor(); 
+    process.waitFor();
 
     BufferedReader stdOut = new BufferedReader(new InputStreamReader(process.getInputStream()));
     BufferedReader stdErr = new BufferedReader(new InputStreamReader(process.getErrorStream()));
@@ -34,12 +34,15 @@ void generateCode() {
   String[] body = new String[blocks.size()];
 
   for (int i = 0; i < blocks.size(); i++) {
-    if (blocks.get(i).label.equals("Defect")) {
-      body[i] = "  println(\"Defect\");";
-    } else if (blocks.get(i).label.equals("Cooperate")) {
-      body[i] = "  println(\"Cooperate\");";
-    } else if (blocks.get(i).label.equals("Repeat")) {
-      body[i] = "  println(\"Repeat last action\");";
+    if (blocks.get(i).label.equals("Defect") && !blocks.get(i).picker) {
+      body[i] = "  background(color(255,0,0));";
+    } else if (blocks.get(i).label.equals("Cooperate")&&!blocks.get(i).picker) {
+      body[i] = "  delay(100);";
+    } else if (blocks.get(i).label.equals("Repeat")&&!blocks.get(i).picker) {
+      body[i] = "  background(color(0,0,255));";
+    }
+    else if(blocks.get(i).picker){
+      body[i] = "";
     }
   }
 
@@ -50,8 +53,9 @@ void generateCode() {
 
 
 void runCode() {
+    parseCode();
   if (canRunProcessingJava()) {
-    generateCode(); 
+    generateCode();
 
     exec("processing-java", "--sketch=" + sketchPath("generated_code"), "--run");
   } else {
@@ -61,16 +65,23 @@ void runCode() {
 
 
 void parseCode() {
-  for (int i = 0; i < blocks.size(); i++) {
-    for (int j = i + 1; j < blocks.size(); j++) {
-      if (!blocks.get(i).picker && !blocks.get(j).picker) {
-        if (blocks.get(i).y > blocks.get(j).y) {
-          // byt rundt
-          Block temp = blocks.get(i);
-          blocks.set(i, blocks.get(j));
-          blocks.set(j, temp);
+  boolean swapped;
+  do {
+    swapped = false;
+
+    for (int i = 0; i < blocks.size() - 1; i++) {
+      Block a = blocks.get(i);
+      Block b = blocks.get(i + 1);
+
+      if (!a.picker && !b.picker) {
+        if (a.y > b.y) {
+          blocks.set(i, b);
+          blocks.set(i + 1, a);
+          swapped = true;
+          println("Swapped " + i + " med " + (i + 1));
         }
       }
     }
-  }
+  } while (swapped);
+  swapped = false;
 }

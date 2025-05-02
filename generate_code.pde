@@ -25,7 +25,7 @@ boolean canRunProcessingJava() {
     return output.toString().toLowerCase().contains("processing");
   }
   catch (IOException | InterruptedException e) {
-    println("Fejl under exec: " + e.getMessage());
+    ////print("Fejl under exec: " + e.getMessage());
   }
   return false;
 }
@@ -219,15 +219,15 @@ String getIndent(int indentLevel) {
 
 
 
-//Dette er funktionen der kører koden. For debugging's skyld, så printer den lige den genereret kode,
+//Dette er funktionen der kører koden. For debugging's skyld, så //printer den lige den genereret kode,
 //ellers kan den også findes inde i mappen "generated_code"
 //Udover bare at køre koden, så kører den også vores funktion fra tidligere, for at sikre at processing kan køres.
 void runCode() {
   if (canRunProcessingJava()) {
     // Generate the code as a string first for debugging
     String generatedCode = generateCode();
-    println("Generated code:");
-    println(generatedCode);
+    ////print("Generated code:");
+    ////print(generatedCode);
 
     // Save the generated code
     String[] codeLines = generatedCode.split("\n");
@@ -236,7 +236,7 @@ void runCode() {
     // Run the code
     exec("processing-java", "--sketch=" + sketchPath("generated_code"), "--run");
   } else {
-    println("Your computer doesn't have processing in its system variables. This is because you're not using the right version of Processing. Please use version 4.3");
+    ////print("Your computer doesn't have processing in its system variables. This is because you're not using the right version of Processing. Please use version 4.3");
   }
 }
 
@@ -254,7 +254,7 @@ void parseCode() {
           blocks.set(i, b);
           blocks.set(i + 1, a);
           swapped = true;
-          println("Swapped " + i + " med " + (i + 1));
+          ////print("Swapped " + i + " med " + (i + 1));
         }
       }
     }

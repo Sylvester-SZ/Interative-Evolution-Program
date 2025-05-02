@@ -419,16 +419,16 @@ class Gennemsnit extends Algoritmer {  //En algoritme der tager det valg der er 
       resultat = true;
     } else if (boolean(round(float(samarbejdet)/float(runde)))) { //hvis der er samarbejdet halvdelen eller over af runderne
 
-      println(round(float(samarbejdet)/float(runde)));
-      println(float(samarbejdet)/float(runde));
-      println(float(samarbejdet) + " " + float(runde));
+      ////print(round(float(samarbejdet)/float(runde)));
+      ////print(float(samarbejdet)/float(runde));
+      ////print(float(samarbejdet) + " " + float(runde));
 
       resultat = true;
     } else {
 
-      println(round(float(samarbejdet)/float(runde)));
-      println(float(samarbejdet)/float(runde));
-      println(float(samarbejdet) + " " + float(runde));
+      ////print(round(float(samarbejdet)/float(runde)));
+      ////print(float(samarbejdet)/float(runde));
+      ////print(float(samarbejdet) + " " + float(runde));
 
       resultat = false;
     }

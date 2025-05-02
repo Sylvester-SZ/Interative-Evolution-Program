@@ -21,7 +21,7 @@ void tjekAlgoritmeKnapper() {
     }
   }
 
-  //println(valgtAlgoritme1 + " " + valgtAlgoritme2);
+  //print(valgtAlgoritme1 + " " + valgtAlgoritme2);
   
   //tjek testknappen
   if (hitbox(width/2 - width/5/2, height/60, width/5, height/10, algoritmeKampSkaerm)){
@@ -29,6 +29,8 @@ void tjekAlgoritmeKnapper() {
 skaermState = 4; //sæt den til skærmen der viser resultater
 
     antalRunder = floor(random(10, 16)); //vælger en tilfældig mængde runder
+    println(antalRunder);
+    
     algoritme_kamp(valgtAlgoritme1, valgtAlgoritme2, antalRunder); //kører de to algoritmer i 10-15 runder
     saveTable(resultater, "data/resultater.HTML"); //tjek resultaterne uden at skulle lave visuelt til skærm så det er nemmere at debugge
   }

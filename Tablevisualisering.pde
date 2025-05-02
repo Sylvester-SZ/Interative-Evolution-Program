@@ -16,8 +16,8 @@ void koerTabel(){
  sildeben.setInt(0,"Spiller 1 valg",1);
  sildeben.setInt(0,"Spiller 2 valg",0);
  
- println(sildeben.getInt(0, "Spiller 1"));
- println(sildeben.getInt(0,"Spiller 2"));
- println(sildeben.getInt(0, "Spiller 1 valg"));
- println(sildeben.getInt(0,"Spiller 2 valg"));
+ ////print(sildeben.getInt(0, "Spiller 1"));
+ ////print(sildeben.getInt(0,"Spiller 2"));
+ ////print(sildeben.getInt(0, "Spiller 1 valg"));
+ ////print(sildeben.getInt(0,"Spiller 2 valg"));
 }

@@ -53,7 +53,7 @@ class Block {
         float wb = blocks.get(i).w;
         float hb = blocks.get(i).h;
         if (mouseX > xb && mouseX < xb + wb && mouseY > yb+hb && mouseY < yb + hb *2 && blocks.get(i).picker==false) {
-          //println("andet tjek " + i);
+          //////print("andet tjek " + i);
           x = blocks.get(i).x;
           y= blocks.get(i).y+blocks.get(i).h;
         } else if (mouseX > xb+wb && mouseX < xb + 2*wb && mouseY > yb && mouseY < yb + hb && blocks.get(i).picker==false) {

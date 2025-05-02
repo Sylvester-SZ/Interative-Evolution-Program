@@ -19,7 +19,7 @@ void mouseReleased() {
   if (hitbox(0, 0, width/14, height/14, 1)) {
     skaermState = 0;
   }
-  if (hitbox(0, 0, width/14, height/14, 2)) {
+  if (hitbox(width/90, 0, width/14, height/14, 2)) {
     skaermState = 0;
   }
   if (hitbox(0, 0, width/14, height/14, 3)) {
@@ -64,7 +64,7 @@ void mousePressed() {
   for (int i = 0; i < blocks.size(); i++) {
     blocks.get(i).checkMousePressed();
   }
-  println(mouseX);
+  ////print(mouseX);
 }
 
 void mouseDragged() {

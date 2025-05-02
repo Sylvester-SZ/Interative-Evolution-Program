@@ -32,6 +32,8 @@ class TabelVisualisering {
     textAlign(CENTER, CENTER);
     strokeWeight(5);
     textSize(txtSize);
+    
+    antalSildeben=antalRunder;
 
     for (int i = 0; i < antalSildeben + 1; i++) {
 
@@ -63,7 +65,7 @@ class TabelVisualisering {
 
   void indsaetDataTabel() { //indsætter data fra table (skemaet) der hedder resultater
 
-    println(resultater.getInt(0, "Spiller 1"));
+    ////print(resultater.getInt(0, "Spiller 1"));
     fill(0);
 
 int s = 0;

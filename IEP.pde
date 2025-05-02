@@ -18,10 +18,10 @@ void setup() {
   try {
     linjer = loadStrings("extrakode.txt");
     String sending = join(linjer, "\n");
-    println("Filen blev læst korrekt!");
+    ////print("Filen blev læst korrekt!");
   }
   catch (Exception e) {
-    println("Fejl ved indlæsning af fil: " + e);
+    ////print("Fejl ved indlæsning af fil: " + e);
   }
 
   //Alle vores actionblokke
@@ -76,7 +76,7 @@ void setup() {
 
   koerTabel(); //kører tabellen
 
-  nytabel = new TabelVisualisering (width/6, height/8, width-width/6*2, height/5, floor(random(10, 16)), 3, 250, 40);
+  nytabel = new TabelVisualisering (width/6, height/8, width-width/6*2, height/5, antalRunder, 3, 250, 40);
   //TabelVisualisering nytabel= new TabelVisualisering (500,500, 500, 250, floor(random(10,16)), 5,125,20);
 
   fullScreen();

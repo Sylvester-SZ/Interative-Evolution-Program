@@ -65,9 +65,9 @@ void AlgoritmeSkaerm() {
   fill(150);
   textAlign(CENTER,CENTER);
   textSize(width/100);
-  rect(0, 0, width/14, height/14);
+  rect(width/90, 0, width/14, height/14);
   fill(50);
-  text("Hjemmeskaerm", width/14/2, height/14/2);
+  text("Hjemmeskaerm", width/14/2+width/90, height/14/2);
   fill(0);
   
     tegnAlgoritmeKnapper();
@@ -106,8 +106,8 @@ void BygSelvSkaerm() {
     //==========================================================================================Forklaring r og c===============
     
     textSize(width/80);
-    text("!! r kører din algoritme!! ", width/1.84, height/6.7);
-    text("!! c sletter alt på skærmen!! ", width/1.84, height/8.5);
+    text("!! r kører din algoritme mod tilfældig !! ", width/1.84, height/8.5);
+    text("!! c sletter alt på skærmen!! ", width/1.84, height/6.7);
   //================================================================================================================================================
    //========================================================================================= knap der fører til en skærm med gode råd ==========
   strokeWeight(5); //sætter tykkelsen på stregen rundt i rektanglen til 5 pixels
@@ -220,7 +220,7 @@ void BygSelvForklaringSkaerm(){
   textSize(width/80); 
   text("For at lave din egen algoritme skal du bruge blokkodning. Spacer sættes under repeat. Antal gange sættes til højre for repeat samt handlingen til højre", width/2, height/3.7);
   textSize(width/50); 
-  text("Øvelse: lav funktionen: if, opponent, defect, cooporate, else, defect", width/2, height/2.6);
+  text("Øvelse: lav funktionen: if, opponent, 1x, ==, defect, cooporate, else, defect", width/2, height/2.6);
   textSize(width/60); 
   text("Denne øvelse vil give en algoritme som ser på om modstandenren ikke samarbejder, og hvis ja, så samarbejder den selv.", width/2, height/2.3);
   text("Hvis modstanderen samarbejder, så samarbejder denne funktion ikke.", width/2, height/2.1);

@@ -1,4 +1,4 @@
-// FØLGENDE KODE ER TYVSTJÅLET FRA ET TIDLIGERE PROJEKT
+// Kode er fundet i tidligere projekt
 
 boolean hitbox(float x0, float y0, float x1, float  y1, int reqskaerm) {
   float tolerance = 6;

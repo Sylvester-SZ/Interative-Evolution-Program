@@ -1,6 +1,6 @@
 ArrayList<Float> heights = new ArrayList<Float>();
 
-//Lavet ved hjælp af AI
+//Lavet ved hjælp af AI. Forsøger at køre processing-java --version, i terminalen for at sikre at processing kan køres igennem consollen.
 boolean canRunProcessingJava() {
   try {
     Process process = Runtime.getRuntime().exec("processing-java --version");
@@ -27,7 +27,7 @@ boolean canRunProcessingJava() {
   return false;
 }
 
-
+//Funktionen der generere koden som vi launcher i et nyt vindue. Lavet i samarbejde med AI, dog med stor egen biddragelse
 String generateCode() {
   StringBuilder codeBuilder = new StringBuilder();
   codeBuilder.append("void setup() {\n");
@@ -37,7 +37,6 @@ String generateCode() {
   codeBuilder.append("  int opponentChoice = 0; // Default to defect (0)\n");
   codeBuilder.append("  int playerChoice = 1; // Default to cooperate (1)\n\n");
 
-  // Process all non-picker blocks in order of their position (top to bottom)
   ArrayList<Block> sortedBlocks = new ArrayList<Block>();
   for (Block block : blocks) {
     if (!block.picker) {
@@ -45,13 +44,11 @@ String generateCode() {
     }
   }
 
-  // Sort blocks by Y position (top to bottom)
   sortedBlocks.sort((a, b) -> Float.compare(a.y, b.y));
 
-  // First pass - identify standalone blocks and starting blocks
+  // Her køres der igennem det som kaldes "main tree". altså alle blokke der står "alene".
   ArrayList<Block> processedBlocks = new ArrayList<Block>();
   for (Block block : sortedBlocks) {
-    // Skip if this block is part of a chain but not the starting block
     boolean isNonStartingChainBlock = false;
     for (Block other : sortedBlocks) {
       if (other != block && other.connectedBlocks.contains(block)) {
@@ -74,7 +71,7 @@ String generateCode() {
 }
 
 
-
+//Denne funktion "forstår" blokkens funktioner og indhold, og laver dem om til den kode der bruges i vores generateCode();
 String processBlock(Block block, int indentLevel) {
   String indent = getIndent(indentLevel);
   StringBuilder codeBuilder = new StringBuilder();
@@ -88,19 +85,17 @@ String processBlock(Block block, int indentLevel) {
     codeBuilder.append(indent + "background(color(255, 0, 0));");
   } 
   else if (block.label.equals("Spacer")) {
-    // Spacer doesn't generate code
     return "";
   } 
   else if (block.label.equals("Repeat")) {
-    // Process the full horizontal chain to find parameters and actions
     ArrayList<Block> chain = new ArrayList<>();
     chain.add(block);
     
-    // Add all directly connected blocks to the chain
+
     for (Block connected : block.connectedBlocks) {
       chain.add(connected);
       
-      // Add blocks connected to this one (assuming a maximum chain length)
+
       for (Block secondLevel : connected.connectedBlocks) {
         if (!chain.contains(secondLevel)) {
           chain.add(secondLevel);
@@ -108,8 +103,7 @@ String processBlock(Block block, int indentLevel) {
       }
     }
     
-    // Find repeat count and action blocks
-    int repeatCount = 5; // Default
+    int repeatCount = 5;
     Block actionBlock = null;
     
     for (Block chainBlock : chain) {
@@ -130,16 +124,13 @@ String processBlock(Block block, int indentLevel) {
     codeBuilder.append(indent + "}");
   } 
   else if (block.label.equals("If")) {
-    // Process the full horizontal chain to find all parts of the if statement
     ArrayList<Block> chain = new ArrayList<>();
     chain.add(block);
     
-    // Build the complete chain of horizontally connected blocks
     ArrayList<Block> processed = new ArrayList<>();
     processed.add(block);
     buildCompleteChain(block, chain, processed);
     
-    // Extract the components from the chain
     Block value1 = null;
     Block operator = null;
     Block value2 = null;
@@ -160,7 +151,7 @@ String processBlock(Block block, int indentLevel) {
       }
     }
     
-    // Generate the if statement code
+    // (Opbygningen af vores if statement)
     if (value1 != null && operator != null && value2 != null) {
       String val1 = value1.isVariable() ? value1.getVariableName() : Integer.toString(value1.getNumericValue());
       String val2 = value2.isVariable() ? value2.getVariableName() : Integer.toString(value2.getNumericValue());
@@ -178,7 +169,6 @@ String processBlock(Block block, int indentLevel) {
     }
   } 
   else if (block.label.contains("x") || block.label.equals("<") || block.label.equals(">") || block.label.equals("==") || block.isVariable()) {
-    // These blocks should be handled by their parent blocks, not directly
     return "";
   } 
   else {
@@ -188,6 +178,7 @@ String processBlock(Block block, int indentLevel) {
   return codeBuilder.toString();
 }
 
+//Den her "kæder" blokkene sammen.
 void buildCompleteChain(Block start, ArrayList<Block> chain, ArrayList<Block> processed) {
   for (Block connected : start.connectedBlocks) {
     if (!processed.contains(connected)) {
@@ -198,6 +189,7 @@ void buildCompleteChain(Block start, ArrayList<Block> chain, ArrayList<Block> pr
   }
 }
 
+//En hjælpefunktion foreslået af AI. Denne funktion gør vi kan ændre indentation i den genereret kode, som gør det mere læsbart. (ikke nødvendig)
 String getIndent(int indentLevel) {
   StringBuilder indent = new StringBuilder();
   for (int i = 0; i < indentLevel; i++) {
@@ -208,7 +200,9 @@ String getIndent(int indentLevel) {
 
 
 
-
+//Dette er funktionen der kører koden. For debugging's skyld, så printer den lige den genereret kode, 
+//ellers kan den også findes inde i mappen "generated_code"
+//Udover bare at køre koden, så kører den også vores funktion fra tidligere, for at sikre at processing kan køres.
 void runCode() {
   if (canRunProcessingJava()) {
     // Generate the code as a string first for debugging
@@ -227,13 +221,11 @@ void runCode() {
   }
 }
 
-
-
+//Sorterer alle vores blokke lodret.
 void parseCode() {
   boolean swapped;
   do {
     swapped = false;
-
     for (int i = 0; i < blocks.size() - 1; i++) {
       Block a = blocks.get(i);
       Block b = blocks.get(i + 1);

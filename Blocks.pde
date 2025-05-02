@@ -24,7 +24,7 @@ class Block {
     textAlign(CENTER, CENTER);
     text(label, x + w/2, y + h/2);
   }
-
+  //Bruges til at tilføje nye blokke ud fra vores "picker" i venstre side og til at starte dragging
   void checkMousePressed() {
     if (mouseX > x && mouseX < x + w && mouseY > y && mouseY < y + h) {
       if (!picker) {
@@ -34,7 +34,7 @@ class Block {
       }
     }
   }
-
+  // Dragger blokken med musen - resetter "parent" variblen som bruges i blok-kode logikken
   void checkMouseDragged() {
     if (dragging) {
       x = mouseX - w / 2;
@@ -42,7 +42,8 @@ class Block {
       parent = null;
     }
   }
-
+  //Indeholder flere funktioner. Ved insættelse af blok lige under en anden blok, snapper den på plads og den nye blok sættes som "parent".
+  //Ved indsættelse ved siden af en anden blok snapper den på plads og den indsættes i Arraylisten "connectedBlocks" som ogs å bruges i blokkode logik.
   void checkMouseReleased() {
     dragging = false;
     if (mouseX > x && mouseX < x + w && mouseY > y && mouseY < y + h) {
@@ -67,25 +68,22 @@ class Block {
       }
     }
   }
-
+  // Denne funktion finder alle "ChildBlocks", altså alle de blokke der har en parent, finder den barnet til (Rekursiv funktion)
   ArrayList<Block> getChildBlocks() {
     ArrayList<Block> children = new ArrayList<Block>();
-
-    // First add direct children (blocks that have this as parent)
+    //sidelens
     for (Block block : blocks) {
       if (!block.picker && block.parent == this) {
         children.add(block);
       }
     }
-
-    // Then find blocks that are vertically connected (directly below)
+    // Under
     for (Block block : blocks) {
       if (!block.picker && block != this) {
-        // Check if block is directly below this block (snapped to bottom)
         if (abs(block.x - this.x) < 5 && abs(block.y - (this.y + this.h)) < 10) {
           children.add(block);
 
-          // Recursively add children of this vertical child
+
           ArrayList<Block> subChildren = block.getChildBlocks();
           for (Block subChild : subChildren) {
             if (!children.contains(subChild)) {
@@ -96,7 +94,6 @@ class Block {
       }
     }
 
-    // Also include blocks in the connectedBlocks list
     for (Block connected : connectedBlocks) {
       if (!children.contains(connected)) {
         children.add(connected);
@@ -108,7 +105,7 @@ class Block {
 
 
 
-  //Fundet i tidligere projekt
+  //Fundet i tidligere projekt. Laver en string der indeholder x (0x, 1x) om til et tal.
   int getNumericValue() {
     int defaultValue = 5;
 
@@ -131,11 +128,12 @@ class Block {
 
     return defaultValue;
   }
+  
+  //Hjælpefunktion der returnere om en label er en af vores 2 varibler. Gør koden mere overskuelig
   boolean isVariable() {
     return label.equals("opponent") || label.equals("player");
   }
-
-  // Get variable name for code generation
+  //Endnu en hjælpefunktion som returnere hvilken varible det er.
   String getVariableName() {
     if (isVariable()) {
       return label + "Choice";
@@ -146,9 +144,8 @@ class Block {
 
 String[] codeLines;
 
-
+//Funktion forslået af AI. Den gør detection af blokke mere præcis når man kigger igennem alle de connected blocks
 boolean isBlockDirectlyBelow(Block upper, Block lower) {
-  // Check if lower block's top edge is near upper block's bottom edge
   return abs(lower.y - (upper.y + upper.h)) < 5 &&
     abs(lower.x - upper.x) < 5;
 }

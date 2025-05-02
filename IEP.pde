@@ -1,6 +1,9 @@
 Algoritmer[] algoritmer = new Algoritmer[4]; //laver et array til algoritmerne
  TabelVisualisering nytabel;
 
+
+//============================================ her er void setup =============================================================================
+
 void setup() {
 
   //sæt algoritmerne i et array så de er nemme at tilgå
@@ -27,13 +30,14 @@ void setup() {
  nytabel = new TabelVisualisering (width/6, height/8, width-width/6*2, height/5, floor(random(10,16)), 3,250,40);
  //TabelVisualisering nytabel= new TabelVisualisering (500,500, 500, 250, floor(random(10,16)), 5,125,20);
  
- //nytabel.indsaetDataTabel();
- 
-
- 
  fullScreen();
  
 }
+
+
+//============================================ her er void draw =============================================================================
+
+
 
 void draw(){ //mouse released interrupter draw funktionen så uden den fungere mouse released ikke
 
@@ -61,6 +65,9 @@ background(190);
   }
   
 }
+
+//============================================ her er void mouseReleased =============================================================================
+
 
 void mouseReleased(){
   

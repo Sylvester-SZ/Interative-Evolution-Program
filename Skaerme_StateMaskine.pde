@@ -26,6 +26,9 @@ void SplashScreen(){
 }
 
 void StartSkaerm(){
+  fill(0);
+  textAlign(LEFT,TOP);
+  textSize(width/100);
    rect(0,0,width/14, height/14);
    fill(255);
  text("Hjemmeskaerm",0,0);
@@ -34,6 +37,9 @@ void StartSkaerm(){
 
 void AlgoritmeSkaerm(){
    tegnAlgoritmeKnapper();
+   fill(0);
+   textAlign(LEFT,TOP);
+   textSize(width/100);
    rect(0,0,width/14, height/14);
    fill(255);
  text("Hjemmeskaerm",0,0);
@@ -41,6 +47,9 @@ void AlgoritmeSkaerm(){
 }
 
 void BygSelvSkaerm(){
+  fill(0);
+  textAlign(LEFT,TOP);
+  textSize(width/100);
    rect(0,0,width/14, height/14);
    fill(255);
  text("Hjemmeskaerm",0,0);
@@ -49,6 +58,10 @@ void BygSelvSkaerm(){
 
 void ResultatSkaerm(){
   nytabel.tabelVisuel();
+  nytabel.indsaetDataTabel();
+  fill(0);
+  textAlign(LEFT,TOP);
+  textSize(width/100);
   rect(0,0,width/14, height/14);
   fill(255);
  text("Hjemmeskaerm",0,0);

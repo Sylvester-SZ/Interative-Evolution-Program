@@ -1,5 +1,8 @@
 
 
+//====================================== classen som danner tabellen der displayes på skærmen ===================================================
+
+
 class TabelVisualisering {
   int xposTabel, yposTabel, sizexTabel, sizeyTabel; //variabler der bruges til at angive x og y pos af tabel og størrelsen i x og y af tabel
   int antalSildeben; //giver et random antal felter
@@ -16,7 +19,13 @@ class TabelVisualisering {
     txtSize= txt;
     bredde1steRaekke=bredRaek1;
   }
-  void tabelVisuel() {
+  
+  
+  
+//==================================================================================viser tabellens felter på skærmen==================================================================================================
+  
+  
+  void tabelVisuel() { //viser tabellens felter på skærmen
 
     stroke(70, 70, 70); //giver farve til linjerne i sildebenet
     fill(80, 80, 80); //giver farve til karaktererne i skemaet
@@ -48,12 +57,40 @@ class TabelVisualisering {
     }
   }
 
-  void indsaetDataTabel() {
 
-    println(sildeben.getInt(0, "Spiller 1"));
-    fill(0, 0, 0);
+//===================================================indsætter data fra table (skemaet) der hedder resultater===========================================================================
 
-    text(sildeben.getInt(0, "Spiller 1"), 550, 550);
+
+  void indsaetDataTabel() { //indsætter data fra table (skemaet) der hedder resultater
+
+    println(resultater.getInt(0, "Spiller 1"));
+    fill(0);
+
+int s = 0;
+while (s<antalSildeben){
+    
+    textAlign(CENTER, CENTER);
+    float x = xposTabel + s*(sizexTabel-bredde1steRaekke)/antalSildeben;
+    
+     fill(80, 80, 80); //giver farve til karaktererne i skemaet
+     
+     if((resultater.getInt(s, "Spiller 1")==3 || (resultater.getInt(s, "Spiller 1")==0))){
+       fill(0,255,0);
+       text(resultater.getInt(s, "Spiller 1"),x+bredde1steRaekke+sizexTabel/antalSildeben/2, yposTabel+(3*(sizeyTabel/antalRaekker)/2));  
+     } else{
+       fill(255,0,0);
+       text(resultater.getInt(s, "Spiller 1"),x+bredde1steRaekke+sizexTabel/antalSildeben/2, yposTabel+(3*(sizeyTabel/antalRaekker)/2));
+     }
+     if((resultater.getInt(s, "Spiller 2")==3 || (resultater.getInt(s, "Spiller 2")==0))){
+       fill(0,255,0);
+     text(resultater.getInt(s, "Spiller 2"),x+bredde1steRaekke+sizexTabel/antalSildeben/2, yposTabel+(5*(sizeyTabel/antalRaekker)/2));
+      s=s+1;
+     } else{
+       fill(255,0,0);
+     text(resultater.getInt(s, "Spiller 2"),x+bredde1steRaekke+sizexTabel/antalSildeben/2, yposTabel+(5*(sizeyTabel/antalRaekker)/2));
+        s=s+1;
+     }
+}
 
     for (int i = 0; i < antalRaekker + 1; i++) { //her indtegnes værdierne fra tabellen
       //float y = yposTabel + l*sizeyTabel/antalRaekker;

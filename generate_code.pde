@@ -1,5 +1,6 @@
 ArrayList<Float> heights = new ArrayList<Float>();
 
+//Lavet ved hjælp af AI
 boolean canRunProcessingJava() {
   try {
     Process process = Runtime.getRuntime().exec("processing-java --version");
@@ -31,7 +32,8 @@ void generateCode() {
   ArrayList<String> bodyLines = new ArrayList<String>();
 
   for (Block block : blocks) {
-    if (!block.picker) {
+    // Kun top‑level blokke (ingen parent) og ikke‑picker
+    if (!block.picker && block.parent == null) {
       bodyLines.add(generateBlockCode(block, 1));
     }
   }
@@ -44,66 +46,71 @@ void generateCode() {
   for (String line : bodyLines) {
     result.add(line);
   }
-
   result.add("}");
 
   saveStrings("generated_code/generated_code.pde", result.toArray(new String[0]));
 }
 
+
+
+
 String generateBlockCode(Block block, int indentLevel) {
-  if (block.picker) return ""; // Undgå utilsigtet kodegenerering
+  if (block.picker) {
+    return "";
+  } else {
+    String indent = getIndent(indentLevel);
 
-  String indent = getIndent(indentLevel);
-
-  if (block.label.equals("Cooperate")) {
-    return indent + "delay(100);\n" + indent + "background(color(0, 255, 0));";
-  }
-
-  if (block.label.equals("Defect")) {
-    return indent + "delay(100);\n" + indent + "background(color(255, 0, 0));";
-  }
-
-  if (block.label.startsWith("Repeat")) {
-    int repeatCount = 1;
-    if (block.label.split(" ").length > 1) {
-      try {
-        repeatCount = Integer.parseInt(block.label.split(" ")[1].replace("x", ""));
-      } catch (Exception e) {
-        repeatCount = 1;
-      }
+    if (block.label.equals("Cooperate")) {
+      return indent + "delay(100);\n" + indent + "background(color(0, 255, 0));";
     }
 
-    ArrayList<Block> children = block.getChildBlocks();
-    StringBuilder repeatCode = new StringBuilder();
-    repeatCode.append(indent + "for (int i = 0; i < " + repeatCount + "; i++) {\n");
-
-    for (Block child : children) {
-      if (!child.picker) {
-        repeatCode.append(generateBlockCode(child, indentLevel + 1) + "\n");
-      }
+    if (block.label.equals("Defect")) {
+      return indent + "delay(100);\n" + indent + "background(color(255, 0, 0));";
     }
 
-    repeatCode.append(indent + "  // End Repeat\n");
-    repeatCode.append(indent + "}");
+    if (block.label.startsWith("Repeat")) {
+      int repeatCount = 1;
+      if (block.label.split(" ").length > 1) {
+        try {
+          repeatCount = Integer.parseInt(block.label.split(" ")[1].replace("x", ""));
+        }
+        catch (Exception e) {
+          repeatCount = 1;
+        }
+      }
 
-    return repeatCode.toString();
+      ArrayList<Block> children = block.getChildBlocks();
+      StringBuilder repeatCode = new StringBuilder();
+      repeatCode.append(indent + "for (int i = 0; i < " + repeatCount + "; i++) {\n");
+
+      for (Block child : children) {
+        if (!child.picker) {
+          repeatCode.append(generateBlockCode(child, indentLevel + 1) + "\n");
+        }
+      }
+
+      repeatCode.append(indent + "  // End Repeat\n");
+      repeatCode.append(indent + "}");
+
+      return repeatCode.toString();
+    }
+
+    return indent + "// Ukendt blok-type: " + block.label;
   }
-
-  return indent + "// Ukendt blok-type: " + block.label;
 }
 
 
 String getIndent(int indentLevel) {
   StringBuilder indent = new StringBuilder();
   for (int i = 0; i < indentLevel; i++) {
-    indent.append("  "); // 2 mellemrum pr. indryk
+    indent.append("  ");
   }
   return indent.toString();
 }
 
 
 void runCode() {
-    parseCode();
+  parseCode();
   if (canRunProcessingJava()) {
     generateCode();
 

@@ -1,5 +1,5 @@
 void keyPressed() {
-  //runCode();
-
-  runCode();
+  if (key == 'r' || key == 'R') {
+    runCode();
+  }
 }

@@ -19,7 +19,6 @@ boolean canRunProcessingJava() {
       output.append(line).append("\n");
     }
 
-
     return output.toString().toLowerCase().contains("processing");
   }
   catch (IOException | InterruptedException e) {
@@ -28,76 +27,145 @@ boolean canRunProcessingJava() {
   return false;
 }
 
-void generateCode() {
-  ArrayList<String> bodyLines = new ArrayList<String>();
+String generateCondition(Block value1, Block operator, Block value2) {
+  // Convert value blocks to appropriate code
+  String val1 = getValueCode(value1);
+  String val2 = getValueCode(value2);
+  String op = operator.label;
+  
+  return val1 + " " + op + " " + val2;
+}
 
-  for (Block block : blocks) {
-    // Kun top‑level blokke (ingen parent) og ikke‑picker
-    if (!block.picker && block.parent == null) {
-      bodyLines.add(generateBlockCode(block, 1));
+String getValueCode(Block valueBlock) {
+  if (valueBlock.label.contains("x")) {
+    // Number block - extract the number
+    return String.valueOf(valueBlock.getNumericValue());
+  } else if (valueBlock.label.equalsIgnoreCase("i")) {
+    // Loop iterator reference
+    return "i";
+  } else {
+    try {
+      // Try parsing as a direct number
+      Integer.parseInt(valueBlock.label);
+      return valueBlock.label;
+    } catch (NumberFormatException e) {
+      // Not a number - could be a variable or other identifier
+      return valueBlock.label;
     }
   }
+}
 
+void generateCode() {
   ArrayList<String> result = new ArrayList<String>();
   result.add("void setup() {");
   result.add("  size(400, 400);");
   result.add("  background(220);");
 
-  for (String line : bodyLines) {
-    result.add(line);
+  // Only process top-level blocks (no parent and not pickers)
+  for (Block block : blocks) {
+    if (!block.picker && block.parent == null) {
+      result.add(generateBlockCode(block, 1));
+    }
   }
+
   result.add("}");
+
+  // Debug output
+  println("Generated code:");
+  for (String line : result) {
+    println(line);
+  }
 
   saveStrings("generated_code/generated_code.pde", result.toArray(new String[0]));
 }
 
-
-
-
+// Improved block code generator with better handling of parent-child relationships
 String generateBlockCode(Block block, int indentLevel) {
   if (block.picker) {
     return "";
-  } else {
-    String indent = getIndent(indentLevel);
-
-    if (block.label.equals("Cooperate")) {
-      return indent + "delay(100);\n" + indent + "background(color(0, 255, 0));";
-    }
-
-    if (block.label.equals("Defect")) {
-      return indent + "delay(100);\n" + indent + "background(color(255, 0, 0));";
-    }
-
-    if (block.label.startsWith("Repeat")) {
-      int repeatCount = 1;
-      if (block.label.split(" ").length > 1) {
-        try {
-          repeatCount = Integer.parseInt(block.label.split(" ")[1].replace("x", ""));
-        }
-        catch (Exception e) {
-          repeatCount = 1;
-        }
-      }
-
-      ArrayList<Block> children = block.getChildBlocks();
-      StringBuilder repeatCode = new StringBuilder();
-      repeatCode.append(indent + "for (int i = 0; i < " + repeatCount + "; i++) {\n");
-
-      for (Block child : children) {
-        if (!child.picker) {
-          repeatCode.append(generateBlockCode(child, indentLevel + 1) + "\n");
-        }
-      }
-
-      repeatCode.append(indent + "  // End Repeat\n");
-      repeatCode.append(indent + "}");
-
-      return repeatCode.toString();
-    }
-
-    return indent + "// Ukendt blok-type: " + block.label;
   }
+  
+  String indent = getIndent(indentLevel);
+  StringBuilder codeBuilder = new StringBuilder();
+  
+  // Process this block
+  if (block.label.equals("Cooperate")) {
+    codeBuilder.append(indent + "delay(100);\n");
+    codeBuilder.append(indent + "background(color(0, 255, 0));");
+  } else if (block.label.equals("Defect")) {
+    codeBuilder.append(indent + "delay(100);\n");
+    codeBuilder.append(indent + "background(color(255, 0, 0));");
+  } else if (block.label.equals("If")) {
+    // Process If statement with connected blocks
+    if (block.connectedBlocks.size() >= 3) {
+      // We need at least 3 blocks: value1, operator, value2
+      Block value1 = block.connectedBlocks.get(0);
+      Block operator = block.connectedBlocks.get(1);
+      Block value2 = block.connectedBlocks.get(2);
+      
+      // Generate condition based on blocks
+      String condition = generateCondition(value1, operator, value2);
+      codeBuilder.append(indent + "if (" + condition + ") {");
+      
+      // Process execution blocks (blocks after the condition)
+      if (block.connectedBlocks.size() > 3) {
+        codeBuilder.append("\n");
+        for (int i = 3; i < block.connectedBlocks.size(); i++) {
+          Block execBlock = block.connectedBlocks.get(i);
+          codeBuilder.append(generateBlockCode(execBlock, indentLevel + 1)).append("\n");
+        }
+        codeBuilder.append(indent);
+      }
+      
+      // Process child blocks (blocks below if) as ELSE clause
+      ArrayList<Block> children = block.getChildBlocks();
+      if (!children.isEmpty()) {
+        codeBuilder.append("\n" + indent + "} else {");
+        codeBuilder.append("\n");
+        for (Block child : children) {
+          codeBuilder.append(generateBlockCode(child, indentLevel + 1)).append("\n");
+        }
+        codeBuilder.append(indent);
+      }
+      
+      codeBuilder.append("}");
+    } else {
+      codeBuilder.append(indent + "// Incomplete If statement - needs value1, operator, value2");
+    }
+  } else if (block.label.startsWith("Repeat")) { //Repeatfunktionen er lavet ved hjælp af AI
+    ArrayList<Block> children = block.getChildBlocks();
+    
+    // Determine repeat count - use first child's numeric value if available
+    int repeatCount = 5; // Default value
+    
+    if (!children.isEmpty()) {
+      Block firstChild = children.get(0);
+      // Use the first child for repeat count if it has a numeric value
+      repeatCount = firstChild.getNumericValue();
+      
+      // Remove the first child from processing as it's used for the count
+      children.remove(0);
+    }
+    
+    codeBuilder.append(indent + "for (int i = 0; i < " + repeatCount + "; i++) {");
+    
+    // Process remaining children
+    if (!children.isEmpty()) {
+      codeBuilder.append("\n");
+      for (Block child : children) {
+        codeBuilder.append(generateBlockCode(child, indentLevel + 1)).append("\n");
+      }
+      codeBuilder.append(indent);
+    }
+    
+    codeBuilder.append("}");
+  } else {
+    codeBuilder.append(indent + "// Unknown block type: " + block.label);
+  }
+  
+  return codeBuilder.toString();
 }
+
 
 
 String getIndent(int indentLevel) {

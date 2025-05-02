@@ -5,7 +5,7 @@ class Block {
   boolean picker;
   int catagory;
   Block parent;
-
+  ArrayList<Block> connectedBlocks = new ArrayList<Block>();
 
   Block(float x, float y, String label, boolean picker, int catagory) {
     this.x = x;
@@ -42,7 +42,7 @@ class Block {
       parent = null;
     }
   }
-  
+
   void checkMouseReleased() {
     dragging = false;
     if (mouseX > x && mouseX < x + w && mouseY > y && mouseY < y + h) {
@@ -59,11 +59,15 @@ class Block {
           x = blocks.get(i).x+blocks.get(i).w;
           y= blocks.get(i).y;
           parent = blocks.get(i);
+
+          if (!blocks.get(i).connectedBlocks.contains(this)) {
+            blocks.get(i).connectedBlocks.add(this);
+          }
         }
       }
     }
   }
-  
+
   ArrayList<Block> getChildBlocks() {
     ArrayList<Block> children = new ArrayList<Block>();
 
@@ -76,7 +80,7 @@ class Block {
 
     // Then find blocks that are vertically connected (directly below)
     for (Block block : blocks) {
-      if (!block.picker && block.parent == null && block != this) {
+      if (!block.picker && block != this) {
         // Check if block is directly below this block (snapped to bottom)
         if (abs(block.x - this.x) < 5 && abs(block.y - (this.y + this.h)) < 10) {
           children.add(block);
@@ -92,13 +96,20 @@ class Block {
       }
     }
 
+    // Also include blocks in the connectedBlocks list
+    for (Block connected : connectedBlocks) {
+      if (!children.contains(connected)) {
+        children.add(connected);
+      }
+    }
+
     return children;
   }
-  
+
   //Fundet i tidligere projekt
-   int getNumericValue() {
+  int getNumericValue() {
     int defaultValue = 5;
-    
+
     try {
       if (label.contains("x")) {
         String[] parts = label.split("x");
@@ -112,9 +123,10 @@ class Block {
           return Integer.parseInt(numStr);
         }
       }
-    } catch (Exception e) {
     }
-    
+    catch (Exception e) {
+    }
+
     return defaultValue;
   }
 }

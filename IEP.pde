@@ -57,7 +57,6 @@ for (int i = 0; i < 15; i++) {
 koerTabel(); //kører tabellen
 
 nytabel = new TabelVisualisering (width/6, height/8, width-width/6*2, height/5, floor(random(10, 16)), 3, 250, 40);
-//TabelVisualisering nytabel= new TabelVisualisering (500,500, 500, 250, floor(random(10,16)), 5,125,20);
 
 fullScreen();
 
@@ -71,9 +70,6 @@ fullScreen();
 void draw() { //mouse released interrupter draw funktionen så uden den fungere mouse released ikke
   
   background(190);
-
-  //følgende er visuelt til debugging, skal bygges ind i en state machine senere
-
 
   switch(skaermState) {
   case 0:

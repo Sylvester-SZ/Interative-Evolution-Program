@@ -141,7 +141,7 @@ void GodeRaedSkaerm(){
   text("mindste point begge to", width/2, height/2.78);
   text("prøv istedet at tage to søde algoritmer. De får nu begge 3 point i hver runde. Det er mere end 1", width/2, height/2.45);
   textSize(width/60);
-  text("Så et lille hint til at designe egne algoritmer (hvis du kan udnytte samarbejde får alle flest mulige point", width/2, height/2);
+  text("Så et lille hint til at designe egne algoritmer (hvis du kan udnytte samarbejde får alle flest mulige point)", width/2, height/2);
   
   //========================================================================================= knap der fører til hjemmeskærm ==================
   strokeWeight(5); //sætter tykkelsen på stregen rundt i rektanglen til 5 pixels

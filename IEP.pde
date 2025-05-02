@@ -126,7 +126,7 @@ void mouseReleased() {
     skaermState = 0;
   }
   if (hitbox(0, 0, width/14, height/14, 5)) {
-    skaermState = 0;
+    skaermState = 4;
   }
   if (hitbox(width-width/14, 0, width/14, height/14, 4)) {
     skaermState = 5;

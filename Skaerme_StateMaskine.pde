@@ -80,6 +80,7 @@ void BygSelvSkaerm() {
   stroke(50);
   fill(190);
   rect(0,0,width/10,height);
+  textSize(width/100);
   for (int i = 0; i < blocks.size(); i++) {
     blocks.get(i).display();
   }
@@ -152,7 +153,7 @@ void GodeRaedSkaerm(){
   textSize(width/60);
   text("Så et lille hint til at designe egne algoritmer (hvis du kan udnytte samarbejde får alle flest mulige point)", width/2, height/2);
   
-  //========================================================================================= knap der fører til hjemmeskærm ==================
+  //========================================================================================= knap der fører til tilbage ==================
   strokeWeight(5); //sætter tykkelsen på stregen rundt i rektanglen til 5 pixels
   stroke(50);
   fill(150);
@@ -160,7 +161,7 @@ void GodeRaedSkaerm(){
   textSize(width/100);
   rect(0, 0, width/14, height/14);
   fill(50);
-  text("Hjemmeskaerm", width/14/2, height/14/2);
+  text("Tilbage", width/14/2, height/14/2);
   fill(0);
   //===========================================================================================================================================
 }

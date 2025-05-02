@@ -34,6 +34,9 @@ String generateCode() {
   codeBuilder.append("  size(400, 400);\n");
   codeBuilder.append("  background(220);\n");
 
+  codeBuilder.append("  int opponentChoice = 0; // Default to defect (0)\n");
+  codeBuilder.append("  int playerChoice = 1; // Default to cooperate (1)\n\n");
+
   // Process all non-picker blocks in order of their position (top to bottom)
   ArrayList<Block> sortedBlocks = new ArrayList<Block>();
   for (Block block : blocks) {
@@ -41,10 +44,10 @@ String generateCode() {
       sortedBlocks.add(block);
     }
   }
-  
+
   // Sort blocks by Y position (top to bottom)
   sortedBlocks.sort((a, b) -> Float.compare(a.y, b.y));
-  
+
   // First pass - identify standalone blocks and starting blocks
   ArrayList<Block> processedBlocks = new ArrayList<Block>();
   for (Block block : sortedBlocks) {
@@ -56,7 +59,7 @@ String generateCode() {
         break;
       }
     }
-    
+
     if (!isNonStartingChainBlock) {
       String blockCode = processBlock(block, 1);
       if (!blockCode.isEmpty()) {
@@ -65,7 +68,7 @@ String generateCode() {
       }
     }
   }
-  
+
   codeBuilder.append("}\n");
   return codeBuilder.toString();
 }
@@ -143,13 +146,13 @@ String processBlock(Block block, int indentLevel) {
     Block actionBlock = null;
     
     for (Block chainBlock : chain) {
-      if (chainBlock.label.contains("x") && value1 == null) {
+      if ((chainBlock.label.contains("x") || chainBlock.isVariable()) && value1 == null) {
         value1 = chainBlock;
       }
       else if ((chainBlock.label.equals("<") || chainBlock.label.equals(">") || chainBlock.label.equals("==")) && operator == null) {
         operator = chainBlock;
       }
-      else if (chainBlock.label.contains("x") && value1 != null && value2 == null) {
+      else if ((chainBlock.label.contains("x") || chainBlock.isVariable()) && value1 != null && value2 == null) {
         value2 = chainBlock;
       }
       else if (chainBlock.label.equals("Cooperate") || chainBlock.label.equals("Defect")) {
@@ -159,8 +162,8 @@ String processBlock(Block block, int indentLevel) {
     
     // Generate the if statement code
     if (value1 != null && operator != null && value2 != null) {
-      int val1 = value1.getNumericValue();
-      int val2 = value2.getNumericValue();
+      String val1 = value1.isVariable() ? value1.getVariableName() : Integer.toString(value1.getNumericValue());
+      String val2 = value2.isVariable() ? value2.getVariableName() : Integer.toString(value2.getNumericValue());
       String op = operator.label;
       
       codeBuilder.append(indent + "if (" + val1 + " " + op + " " + val2 + ") {\n");
@@ -174,7 +177,7 @@ String processBlock(Block block, int indentLevel) {
       codeBuilder.append(indent + "// Incomplete If statement - missing condition or executable blocks");
     }
   } 
-  else if (block.label.contains("x") || block.label.equals("<") || block.label.equals(">") || block.label.equals("==")) {
+  else if (block.label.contains("x") || block.label.equals("<") || block.label.equals(">") || block.label.equals("==") || block.isVariable()) {
     // These blocks should be handled by their parent blocks, not directly
     return "";
   } 
@@ -204,17 +207,19 @@ String getIndent(int indentLevel) {
 }
 
 
+
+
 void runCode() {
   if (canRunProcessingJava()) {
     // Generate the code as a string first for debugging
     String generatedCode = generateCode();
     println("Generated code:");
     println(generatedCode);
-    
+
     // Save the generated code
     String[] codeLines = generatedCode.split("\n");
     saveStrings("generated_code/generated_code.pde", codeLines);
-    
+
     // Run the code
     exec("processing-java", "--sketch=" + sketchPath("generated_code"), "--run");
   } else {

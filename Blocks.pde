@@ -106,6 +106,8 @@ class Block {
     return children;
   }
 
+
+
   //Fundet i tidligere projekt
   int getNumericValue() {
     int defaultValue = 5;
@@ -128,6 +130,17 @@ class Block {
     }
 
     return defaultValue;
+  }
+  boolean isVariable() {
+    return label.equals("opponent") || label.equals("player");
+  }
+
+  // Get variable name for code generation
+  String getVariableName() {
+    if (isVariable()) {
+      return label + "Choice";
+    }
+    return "unknown";
   }
 }
 

@@ -8,19 +8,23 @@ void setup() {
   fullScreen();
 
   blocks.add(new Block(50, 50, "Cooperate", true, 1));
-  blocks.add(new Block(50, 550, "Spacer", true, 1));
+  blocks.add(new Block(50, 700, "Spacer", true, 1));
   blocks.add(new Block(50, 100, "Defect", true, 1));
   blocks.add(new Block(50, 150, "Repeat", true, 1));
   blocks.add(new Block(50, 200, "If", true, 1)); 
   
 
-  blocks.add(new Block(50, 250, "5x", true, 2));
-  blocks.add(new Block(50, 300, "10x", true, 2));
-  blocks.add(new Block(50, 350, "20x", true, 2));
+  blocks.add(new Block(50, 260, "0x", true, 2));
+  blocks.add(new Block(50, 310, "1x", true, 2));
+  blocks.add(new Block(50, 360, "5x", true, 2));
+  blocks.add(new Block(50, 310, "10x", true, 2));
   
-  blocks.add(new Block(50, 400, "==", true, 3));
-  blocks.add(new Block(50, 450, ">", true, 3));
-  blocks.add(new Block(50, 500, "<", true, 3));
+  blocks.add(new Block(50, 420, "==", true, 3));
+  blocks.add(new Block(50, 470, ">", true, 3));
+  blocks.add(new Block(50, 520, "<", true, 3));
+  
+  blocks.add(new Block(50, 580, "opponent", true, 4));
+  blocks.add(new Block(50, 630, "player", true, 4));
 }
 
 void draw() {

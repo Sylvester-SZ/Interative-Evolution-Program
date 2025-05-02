@@ -16,17 +16,15 @@ void tjekAlgoritmeKnapper() {
   }
 
   println(valgtAlgoritme1 + " " + valgtAlgoritme2);
-  
-  //tjek testknappen
-  if (hitbox(width/2 - width/5/2, height/60, width/5, height/10, algoritmeKampSkaerm)){
-    
-skaermState = 4; //sæt den til skærmen der viser resultater, som er 1  nu men nok ikke skal være det
 
-algoritme_kamp(valgtAlgoritme1, valgtAlgoritme2);
-saveTable(resultater, "data/resultater.HTML"); //tjek resultaterne uden at skulle lave visuelt til skærm så det er nemmere at debugge
-    
+  //tjek testknappen
+  if (hitbox(width/2 - width/5/2, height/60, width/5, height/10, algoritmeKampSkaerm)) {
+
+    skaermState = 4; //sæt den til skærmen der viser resultater, som er 1  nu men nok ikke skal være det
+
+    algoritme_kamp(valgtAlgoritme1, valgtAlgoritme2);
+    saveTable(resultater, "data/resultater.HTML"); //tjek resultaterne uden at skulle lave visuelt til skærm så det er nemmere at debugge
   }
-  
 }
 
 void tegnAlgoritmeKnapper() {
@@ -38,7 +36,7 @@ void tegnAlgoritmeKnapper() {
   strokeWeight(5);
 
   for (int i = 0; i < algoritmer.length; i++) {
-    
+
     //nedenstående tegner knapperne i venstre side
     if (valgtAlgoritme1 == i) { //hvis dette er den valgte algortime
 
@@ -69,12 +67,11 @@ void tegnAlgoritmeKnapper() {
     fill(50);
     text(algoritmer[i].navn, width - (width/20 + width/80), height/10 * (i + 1) + height/30 * i + height/40, -(width/10 - 2 * width/80), height/10 - 2 * height/40);
   }
-  
+
   //tegner test knappen
-  fill(170, 210, 240); 
-      rect(width/2 - width/5/2, height/60, width/5, height/10, 10);
-      textSize(height/30);
-      fill(150);
-      text("Test algoritmerne", width/2 - width/5/2, height/60, width/5, height/10);
-  
+  fill(170, 210, 240);
+  rect(width/2 - width/5/2, height/60, width/5, height/10, 10);
+  textSize(height/30);
+  fill(150);
+  text("Test algoritmerne", width/2 - width/5/2, height/60, width/5, height/10);
 }

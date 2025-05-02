@@ -1,0 +1,384 @@
+boolean resultat;  //det sidste resultat der er udregnet
+int runde = 0;  // hvilken runde vi er på
+
+//lav alle algoritme objekterne
+SoedAlgoritme soedAlgoritme = new SoedAlgoritme();
+OndAlgoritme ondAlgoritme = new OndAlgoritme();
+Random random = new Random();
+Copycat copycat = new Copycat();
+
+class Algoritmer {  //klassen der opbevarer vores algoritmer
+
+  String navn; //navnet på algoritmen
+  boolean soed; //om algoritmen er soed i første runde
+
+  Algoritmer() {
+
+    //alt der skal være i construkteren
+  }
+  
+    boolean spil(Table resultater, boolean spiller1) { //metoder der finder ud af hvad en algoritme vil gøre
+
+return (resultat); //returnere hvad den fandt ud af
+    }
+    
+      boolean erSoed() {
+
+    return (soed);
+  }
+  
+    String navn() {
+
+    return (navn);
+    
+  }
+  
+}
+
+
+
+/*======================================= ny algoritme =============================================*/
+
+
+
+class SoedAlgoritme extends Algoritmer {  //en algoritme der altid er sød
+
+  SoedAlgoritme () {
+
+    navn = "Sød algoritme";
+    soed = true;  //den er som sagt sød
+  }
+
+  boolean spil(Table resultater, boolean spiller1) { //grunden til at der er ubrugte indput er så der ikke kommer en error hvis metoden senere bliver kaldt i et for loop med input den ikke bruger
+
+    resultat = true;  //den returneere altid true fordi den altid samarbejder
+
+    return(resultat);
+  }
+
+  boolean erSoed() {
+
+    return (soed);
+  }
+
+  String navn() {
+
+    return (navn);
+    
+  }
+}
+
+
+
+/*=======================================ny algoritme=============================================*/
+
+
+
+class OndAlgoritme extends Algoritmer {  //en algoritme der aldrig samarbejder
+
+  OndAlgoritme () {
+
+    navn = "Ond algoritme";
+    soed = false;  //den er som sagt ikke sød
+  }
+
+  boolean spil(Table resultater, boolean spiller1) {
+
+    resultat = false;  //den returneere altid false fordi den aldrig samarbejder
+
+    return(resultat);
+  }
+
+  boolean erSoed() {
+
+    return (soed);
+  }
+
+  String navn() {
+
+    return (navn);
+  }
+}
+
+
+
+/*======================================= ny algoritme =============================================*/
+
+
+
+class Random extends Algoritmer {  //en algoritme der samarbejder tilfældigt
+
+  Random () {
+
+    navn = "Tilfældig algoritme";
+    soed = true;  //den vil ikke (nødvendigvis) gå efter at samarbejde i første runde
+  }
+
+  boolean spil(Table resultater, boolean spiller1) {
+
+    if (int(random(2)) == 0) { //50/50 chance
+
+      resultat = true;  //tilfældigt output
+    } else {
+
+      resultat = false;
+    }
+
+    return(resultat);
+  }
+
+  boolean erSoed() {
+
+    return (soed);
+  }
+
+  String navn() {
+
+    return (navn);
+  }
+}
+
+
+
+/*=======================================ny algoritme=============================================*/
+
+
+
+class Copycat extends Algoritmer {  //en algoritme der gør hvad modstanderen gjorde sidst
+
+  Copycat() {
+
+    navn = "Copycat";
+    soed = true;  //den starter med at være sød fordi modstanderen ikke har gjort noget endnu
+  }
+
+  boolean spil(Table resultater, boolean spiller1) {
+
+    if (runde == 0) {  //hvis det er første runde
+
+      resultat = true;   //samarbejd
+    } else if (spiller1) { //ellers hvis de er spiller 1
+
+      if (boolean(resultater.getInt(runde-1, 3))) { //tjek modstanderens sidste træk i tabellen
+
+        resultat = true; //hvis de samarbejdede så samarbejd
+      } else {
+
+        resultat = false; // ellers lad vær
+      }
+    } else { //hvis de er spiller 2
+
+      if (boolean(resultater.getInt(runde-1, 2))) { //tjek spiller 1 sidste træk
+
+        //gør det samme som de gjorde
+
+        resultat = true;
+      } else {
+
+        resultat = false;
+      }
+    }
+
+    return(resultat);
+  }
+
+  boolean erSoed() {
+
+    return (soed);
+  }
+
+  String navn() {
+
+    return (navn);
+  }
+}
+
+Algoritmer[] algoritmer = new Algoritmer[4]; //laver et array til algoritmerne
+
+
+
+
+
+Table resultater = new Table();  //tabel med resultaterne
+
+void algoritme_kamp(int algoritme1) { //kan laves til at returnere en tabel i stedet for at opdatere hvis man vil lave multithreading i en større evolutionssimulation
+
+  for (int i = 0; i < 12; i++) { //kør antallet af runder, eksempelvis 12
+
+    resultater.setInt(i, 2, int(bygselvspil(resultater))); //finder ud af hvad algoritmerne vil gøre i en given runde og sætter det i tabellen med resultater
+
+    resultater.setInt(i, 3, int(algoritmer[algoritme1].spil(resultater, false)));
+
+    //sætter point ind baseret på valg
+    if (boolean(resultater.getInt(i, 2)) && boolean(resultater.getInt(i, 3))) { //hvis begge er søde
+      //sætter point ind
+      resultater.setInt(i, 0, 3);
+      resultater.setInt(i, 1, 3);
+    } else if (!boolean(resultater.getInt(i, 2)) && boolean(resultater.getInt(i, 3))) { // hvis første er ond
+      //sætter point ind
+      resultater.setInt(i, 0, 5);
+      resultater.setInt(i, 1, 0);
+    } else if (boolean(resultater.getInt(i, 2)) && !boolean(resultater.getInt(i, 3))) { // hvis anden er ond
+      //sætter point ind
+      resultater.setInt(i, 0, 0);
+      resultater.setInt(i, 1, 5);
+    } else if (!boolean(resultater.getInt(i, 2)) && !boolean(resultater.getInt(i, 3))) { // hvis begge er ond
+      //sætter point ind
+      resultater.setInt(i, 0, 1);
+      resultater.setInt(i, 1, 1);
+    }
+
+    runde++; //næste runde
+  }
+
+  runde = 0; //når algoritmerne har kørt resettes runden
+}
+
+
+
+//====================================== classen som danner tabellen der displayes på skærmen ===================================================
+
+
+class TabelVisualisering {
+  int xposTabel, yposTabel, sizexTabel, sizeyTabel; //variabler der bruges til at angive x og y pos af tabel og størrelsen i x og y af tabel
+  int antalSildeben; //giver et random antal felter
+  int antalRaekker=4, txtSize;
+  int bredde1steRaekke;
+  TabelVisualisering (int x, int y, int strx, int stry, int sildeben, int raekker, int bredRaek1, int txt) {
+
+    xposTabel=x;
+    yposTabel=y;
+    sizexTabel=strx;
+    sizeyTabel=stry;
+    antalSildeben=sildeben;
+    antalRaekker=raekker;
+    txtSize= txt;
+    bredde1steRaekke=bredRaek1;
+  }
+  
+  
+  
+//==================================================================================viser tabellens felter på skærmen==================================================================================================
+  
+  
+  void tabelVisuel() { //viser tabellens felter på skærmen
+
+    stroke(70, 70, 70); //giver farve til linjerne i sildebenet
+    fill(80, 80, 80); //giver farve til karaktererne i skemaet
+    textAlign(CENTER, CENTER);
+    strokeWeight(5);
+    textSize(txtSize);
+
+    for (int i = 0; i < antalSildeben + 1; i++) {
+
+      float x = xposTabel + i*(sizexTabel-bredde1steRaekke)/antalSildeben;
+      line(x+bredde1steRaekke, yposTabel, x+bredde1steRaekke, yposTabel+sizeyTabel);
+    }
+
+    for (int i = 0; i < antalSildeben; i++) { //dette while for indskriver runde tallet i sildebensskemaet
+      float x = xposTabel + i*(sizexTabel-bredde1steRaekke)/antalSildeben;
+      text(i+1, x+bredde1steRaekke+(((sizexTabel-bredde1steRaekke)/antalSildeben)/2), yposTabel+(sizeyTabel/antalRaekker)/2);
+    }
+
+
+
+    for (int i = 0; i < antalRaekker + 1; i++) {
+      float y = yposTabel + i*sizeyTabel/antalRaekker;
+      line(xposTabel, y, xposTabel+sizexTabel, y); //laver den linje der danne selve sildebenet
+
+      line(xposTabel, yposTabel, xposTabel, yposTabel+sizeyTabel); //laver en linje til første række af felter
+      text("Runde:", xposTabel+(bredde1steRaekke/2), yposTabel+(1*(sizeyTabel/antalRaekker)/2));//tekst til rows i tabel
+      text("Din Algo", xposTabel+(bredde1steRaekke/2), yposTabel+(3*(sizeyTabel/antalRaekker)/2));//tekst til rows i tabel
+      text(algoritmer[algo].navn, xposTabel+(bredde1steRaekke/2), yposTabel+(5*(sizeyTabel/antalRaekker)/2));//tekst til rows i tabel
+    }
+  }
+
+
+//===================================================indsætter data fra table (skemaet) der hedder resultater===========================================================================
+
+
+  void indsaetDataTabel() { //indsætter data fra table (skemaet) der hedder resultater
+
+    println(resultater.getInt(0, "Spiller 1"));
+    fill(0);
+
+int s = 0;
+while (s<antalSildeben){
+    
+    textAlign(CENTER, CENTER);
+    float x = xposTabel + s*(sizexTabel-bredde1steRaekke)/antalSildeben;
+    
+     fill(80, 80, 80); //giver farve til karaktererne i skemaet
+     
+     if((resultater.getInt(s, "Spiller 1")==3 || (resultater.getInt(s, "Spiller 1")==0))){
+       fill(0,255,0);
+       text(resultater.getInt(s, "Spiller 1"),x+bredde1steRaekke+sizexTabel/antalSildeben/2, yposTabel+(3*(sizeyTabel/antalRaekker)/2));  
+     } else{
+       fill(255,0,0);
+       text(resultater.getInt(s, "Spiller 1"),x+bredde1steRaekke+sizexTabel/antalSildeben/2, yposTabel+(3*(sizeyTabel/antalRaekker)/2));
+     }
+     if((resultater.getInt(s, "Spiller 2")==3 || (resultater.getInt(s, "Spiller 2")==0))){
+       fill(0,255,0);
+     text(resultater.getInt(s, "Spiller 2"),x+bredde1steRaekke+sizexTabel/antalSildeben/2, yposTabel+(5*(sizeyTabel/antalRaekker)/2));
+      s=s+1;
+     } else{
+       fill(255,0,0);
+     text(resultater.getInt(s, "Spiller 2"),x+bredde1steRaekke+sizexTabel/antalSildeben/2, yposTabel+(5*(sizeyTabel/antalRaekker)/2));
+        s=s+1;
+     }
+}
+
+    for (int i = 0; i < antalRaekker + 1; i++) { //her indtegnes værdierne fra tabellen
+      //float y = yposTabel + l*sizeyTabel/antalRaekker;
+    }
+  }
+}
+
+
+Table sildeben;
+TabelVisualisering nytabel;
+
+void koerTabel(){
+ sildeben = new Table();
+ 
+ sildeben.addColumn("Spiller 1", Table.INT);
+ sildeben.addColumn("Spiller 2", Table.INT);
+ sildeben.addColumn("Spiller 1 valg", Table.INT);
+ sildeben.addColumn("Spiller 2 valg", Table.INT);
+ 
+ sildeben.addRow();
+ 
+ sildeben.setInt(0,"Spiller 1",5);
+ sildeben.setInt(0,"Spiller 2",0);
+ sildeben.setInt(0,"Spiller 1 valg",1);
+ sildeben.setInt(0,"Spiller 2 valg",0);
+ 
+ println(sildeben.getInt(0, "Spiller 1"));
+ println(sildeben.getInt(0,"Spiller 2"));
+ println(sildeben.getInt(0, "Spiller 1 valg"));
+ 
+}
+int algo;
+void setup(){
+  nytabel = new TabelVisualisering (width/6, height/8, width-width/6*2, height/5, floor(random(10, 16)), 3, 250, 40);
+  koerTabel();
+  fullScreen();
+  algoritmer[0] = soedAlgoritme;
+  algoritmer[1] = ondAlgoritme;
+  algoritmer[2] = random;
+  algoritmer[3] = copycat;
+  
+  resultater.addColumn("Spiller 1");
+  resultater.addColumn("Spiller 2");
+  resultater.addColumn("Spiller 1 Valg");
+  resultater.addColumn("Spiller 2 Valg");
+  for (int i = 0; i < 15; i++) {
+
+    resultater.addRow(); //tilføjer alle rækkerne til vores resultat table
+  }
+  algo = floor(random(0,4));
+  algoritme_kamp(algo);
+  
+  nytabel.tabelVisuel();
+  nytabel.indsaetDataTabel();
+}

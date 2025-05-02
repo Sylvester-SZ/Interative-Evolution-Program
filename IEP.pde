@@ -37,9 +37,28 @@ void setup() {
 
 void draw(){ //mouse released interrupter draw funktionen så uden den fungere mouse released ikke
 
+background(190);
+
 //følgende er visuelt til debugging, skal bygges ind i en state machine senere
-  nytabel.tabelVisuel();
-  tegnAlgoritmeKnapper();
+  
+  
+  switch(skaermState){
+   case 0:
+   SplashScreen();
+   break;
+   case 1:
+   StartSkaerm();
+   break;
+   case 2:
+   AlgoritmeSkaerm();
+   break;
+   case 3:
+   BygSelvSkaerm();
+   break;
+   case 4:
+   ResultatSkaerm();
+   break;
+  }
   
 }
 

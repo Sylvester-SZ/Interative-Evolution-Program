@@ -1,6 +1,6 @@
 int valgtAlgoritme1; //den første algoritme valgt af brugeren
 int valgtAlgoritme2; //den anden algoritme valgt af brugeren
-int algoritmeKampSkaerm = 0;
+int algoritmeKampSkaerm = 2;
 
 void tjekAlgoritmeKnapper() {
 
@@ -20,7 +20,7 @@ void tjekAlgoritmeKnapper() {
   //tjek testknappen
   if (hitbox(width/2 - width/5/2, height/60, width/5, height/10, algoritmeKampSkaerm)){
     
-skaermState = 1; //sæt den til skærmen der viser resultater, som er 1  nu men nok ikke skal være det
+skaermState = 4; //sæt den til skærmen der viser resultater, som er 1  nu men nok ikke skal være det
 
 algoritme_kamp(valgtAlgoritme1, valgtAlgoritme2);
 saveTable(resultater, "data/resultater.HTML"); //tjek resultaterne uden at skulle lave visuelt til skærm så det er nemmere at debugge

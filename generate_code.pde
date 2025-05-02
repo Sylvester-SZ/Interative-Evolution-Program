@@ -1,14 +1,16 @@
+ArrayList<Float> heights = new ArrayList<Float>();
+
 boolean canRunProcessingJava() {
   try {
     Process process = Runtime.getRuntime().exec("processing-java --version");
-    process.waitFor(); // Vent på at processen er færdig
+    process.waitFor(); 
 
     BufferedReader stdOut = new BufferedReader(new InputStreamReader(process.getInputStream()));
     BufferedReader stdErr = new BufferedReader(new InputStreamReader(process.getErrorStream()));
 
     String line;
     StringBuilder output = new StringBuilder();
-    
+
     while ((line = stdOut.readLine()) != null) {
       output.append(line).append("\n");
     }
@@ -16,12 +18,10 @@ boolean canRunProcessingJava() {
       output.append(line).append("\n");
     }
 
-    //println("Output fra kommandoen:\n" + output);
 
-    // Kig i output for noget der ligner "Processing 4.x"
     return output.toString().toLowerCase().contains("processing");
-    
-  } catch (IOException | InterruptedException e) {
+  }
+  catch (IOException | InterruptedException e) {
     println("Fejl under exec: " + e.getMessage());
   }
   return false;
@@ -51,12 +51,26 @@ void generateCode() {
 
 void runCode() {
   if (canRunProcessingJava()) {
-    generateCode(); // Gemmer filen
+    generateCode(); 
 
-    // Eksekverer Processing-koden
     exec("processing-java", "--sketch=" + sketchPath("generated_code"), "--run");
-  }
-  else{
+  } else {
     println("Din computer har ikke processing i dens systemvaribler. Dette skyldes at du ikke bruger den rigtige version af Processing. Brug venligst version 4.3");
+  }
+}
+
+
+void parseCode() {
+  for (int i = 0; i < blocks.size(); i++) {
+    for (int j = i + 1; j < blocks.size(); j++) {
+      if (!blocks.get(i).picker && !blocks.get(j).picker) {
+        if (blocks.get(i).y > blocks.get(j).y) {
+          // byt rundt
+          Block temp = blocks.get(i);
+          blocks.set(i, blocks.get(j));
+          blocks.set(j, temp);
+        }
+      }
+    }
   }
 }

@@ -1,3 +1,5 @@
+
+
 class Block {
   float x, y, w, h;
   String label;
@@ -28,7 +30,6 @@ class Block {
       if (!picker) {
         dragging = true;
       } else {
-
         blocks.add(new Block(x+150, y, label, false, 1));
       }
     }

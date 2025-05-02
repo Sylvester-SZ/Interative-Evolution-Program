@@ -1,3 +1,6 @@
 void keyPressed() {
-  runCode();
+  //runCode();
+  println(blocks.get(1).label);
+  parseCode();
+  println(blocks.get(1).label);
 }

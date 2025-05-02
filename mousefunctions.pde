@@ -34,9 +34,16 @@ void mouseReleased() {
   if (hitbox(width-width/14, 0, width/14, height/14, 4)) {
     skaermState = 5;
   }
+   if (hitbox(width-width/14,0, width/14, height/14, 3)) {
+    skaermState = 6;
+  }
+  if (hitbox(0, 0, width/14, height/14, 6)) {
+    skaermState = 3;
+  }
 
   draggerVenstreScrollBar = false; //hvis man giver slip på musen stopper man med at dragge
   draggerHoejreScrollBar = false;
+
 }
 
 void mousePressed() {

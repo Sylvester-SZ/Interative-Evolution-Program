@@ -2,13 +2,10 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
 
-Algoritmer[] algoritmer = new Algoritmer[4]; //laver et array til algoritmerne
+Algoritmer[] algoritmer = new Algoritmer[9]; //laver et array til algoritmerne
 TabelVisualisering nytabel;
 
 ArrayList<Block> blocks = new ArrayList<Block>();
-
-Algoritmer[] algoritmer = new Algoritmer[9]; //laver et array til algoritmerne
-TabelVisualisering nytabel;
 
 int antalRunder; //antallet af runder algortimerne spiller mod hinanden
 
@@ -80,10 +77,6 @@ void setup() {
 void draw() { //mouse released interrupter draw funktionen så uden den fungere mouse released ikke
 
   background(190);
-
-  //følgende er visuelt til debugging, skal bygges ind i en state machine senere
-  nytabel.tabelVisuel();
-  tegnAlgoritmeKnapper();
 
   switch(skaermState) {
   case 0:

@@ -464,7 +464,7 @@ class Detektiv extends Algoritmer {  //En algoritme der starter med at være som
 
     navn = "Detektiv";
     soed = false;  //den kan godt være den første der ikke samarbejder
-    beskrivelse = "En algoritme der starter med at være sød, men efter nogle runder tjekker om modstanderen gør modstand hvis den er ikke samarbejder. Hvis modstandere ikke gør modstand, bliver den ved med ikke at samarbejde.";
+    beskrivelse = "En algoritme der starter med at være sød, men efter nogle runder tjekker den om modstanderen tager hævn hvis den ikke samarbejder. Hvis modstanderen ikke gør modstand, bliver den ved med ikke at samarbejde.";
   }
 
   boolean spil(Table resultater, boolean spiller1) {

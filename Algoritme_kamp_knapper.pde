@@ -106,7 +106,7 @@ void tegnAlgoritmeKnapper() {
 
   //tegner beskrivelserne af algoritmerne
   fill(0);
-  text(algoritmer[valgtAlgoritme1].beskrivelse, 3 * width/20 + 2 * width/80, height/60, width/5, height/4);
-  text(algoritmer[valgtAlgoritme2].beskrivelse, width - (3 * width/20 + 2 * width/80), height/60, -width/5, height/4);
+  text(algoritmer[valgtAlgoritme1].beskrivelse, 3 * width/20 + 2 * width/80, height/60, width/5, height/2);
+  text(algoritmer[valgtAlgoritme2].beskrivelse, width - (3 * width/20 + 2 * width/80), height/60, -width/5, height/2);
 
 }

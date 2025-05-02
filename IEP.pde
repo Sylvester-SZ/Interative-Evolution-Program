@@ -1,11 +1,19 @@
-Algoritmer[] algoritmer = new Algoritmer[4]; //laver et array til algoritmerne
-TabelVisualisering nytabel;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.IOException;
 
+Algoritmer[] algoritmer = new Algoritmer[4]; //laver et array til algoritmerne
+TabelVisualisering nytabel;
+
 ArrayList<Block> blocks = new ArrayList<Block>();
 
+Algoritmer[] algoritmer = new Algoritmer[9]; //laver et array til algoritmerne
+TabelVisualisering nytabel;
+
+int antalRunder; //antallet af runder algortimerne spiller mod hinanden
+
+boolean draggerVenstreScrollBar = false;
+boolean draggerHoejreScrollBar = false;
 
 //============================================ her er void setup =============================================================================
 
@@ -35,45 +43,47 @@ void setup() {
   blocks.add(new Block(50, height/14*1.3+blocksoffset*13+ekstraoffset*4, "Spacer", true, 1));
 
 
-//sæt algoritmerne i et array så de er nemme at tilgå
-algoritmer[0] = soedAlgoritme;
-algoritmer[1] = ondAlgoritme;
-algoritmer[2] = random;
-algoritmer[3] = copycat;
+  antalRunder = floor(random(10, 16));
 
-//lav tabel med resultater
-resultater.addColumn("Spiller 1");
-resultater.addColumn("Spiller 2");
-resultater.addColumn("Spiller 1 Valg");
-resultater.addColumn("Spiller 2 Valg");
+  //sæt algoritmerne i et array så de er nemme at tilgå
+  algoritmer[0] = soedAlgoritme;
+  algoritmer[1] = ondAlgoritme;
+  algoritmer[2] = random;
+  algoritmer[3] = copycat;
+  algoritmer[4] = haevnfuld;
+  algoritmer[5] = pavlov;
+  algoritmer[6] = vægtetTilfældig;
+  algoritmer[7] = gennemsnit;
+  algoritmer[8] = detektiv;
 
-for (int i = 0; i < 15; i++) {
+  //lav tabel med resultater
+  resultater.addColumn("Spiller 1");
+  resultater.addColumn("Spiller 2");
+  resultater.addColumn("Spiller 1 Valg");
+  resultater.addColumn("Spiller 2 Valg");
 
-  resultater.addRow(); //tilføjer alle rækkerne til vores resultat table
-}
+  for (int i = 0; i < 15; i++) {
 
-//saveTable(resultater, "data/resultater.HTML"); //tjek resultaterne uden at skulle lave visuelt til skærm så det er nemmere at debugge
+    resultater.addRow(); //tilføjer alle rækkerne til vores resultat table
+  }
 
-koerTabel(); //kører tabellen
+  koerTabel(); //kører tabellen
 
-nytabel = new TabelVisualisering (width/6, height/8, width-width/6*2, height/5, floor(random(10, 16)), 3, 250, 40);
-//TabelVisualisering nytabel= new TabelVisualisering (500,500, 500, 250, floor(random(10,16)), 5,125,20);
+  nytabel = new TabelVisualisering (width/6, height/8, width-width/6*2, height/5, floor(random(10, 16)), 3, 250, 40);
 
-fullScreen();
-
+  fullScreen();
 }
 
 
 //============================================ her er void draw =============================================================================
 
-
-
 void draw() { //mouse released interrupter draw funktionen så uden den fungere mouse released ikke
-  
+
   background(190);
 
   //følgende er visuelt til debugging, skal bygges ind i en state machine senere
-
+  nytabel.tabelVisuel();
+  tegnAlgoritmeKnapper();
 
   switch(skaermState) {
   case 0:
@@ -94,41 +104,5 @@ void draw() { //mouse released interrupter draw funktionen så uden den fungere 
   case 5:
     GodeRaedSkaerm();
     break;
-  }
-}
-
-//============================================ her er void mouseReleased =============================================================================
-
-
-void mouseReleased() {
-  for (int i = 0; i < blocks.size(); i++) {
-    blocks.get(i).checkMouseReleased();
-  }
-  tjekAlgoritmeKnapper(); //tjekker om der trykkes på algoritmeknapperne
-
-  if (hitbox(width/1.6, height/1.4, width/5, height/5, 0)) {
-    skaermState = 2;
-  }
-
-  if (hitbox(width/7, height/1.4, width/5, height/5, 0)) {
-    skaermState = 3;
-  }
-  if (hitbox(0, 0, width/14, height/14, 1)) {
-    skaermState = 0;
-  }
-  if (hitbox(0, 0, width/14, height/14, 2)) {
-    skaermState = 0;
-  }
-  if (hitbox(0, 0, width/14, height/14, 3)) {
-    skaermState = 0;
-  }
-  if (hitbox(0, 0, width/14, height/14, 4)) {
-    skaermState = 0;
-  }
-  if (hitbox(0, 0, width/14, height/14, 5)) {
-    skaermState = 4;
-  }
-  if (hitbox(width-width/14, 0, width/14, height/14, 4)) {
-    skaermState = 5;
   }
 }

@@ -97,5 +97,10 @@ void draw() { //mouse released interrupter draw funktionen så uden den fungere 
   case 5:
     GodeRaedSkaerm();
     break;
+  case 6:
+    BygSelvForklaringSkaerm();
+    break;
   }
 }
+
+//============================================ her er void mouseReleased =============================================================================

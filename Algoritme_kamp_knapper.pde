@@ -99,11 +99,12 @@ void tegnAlgoritmeKnapper() {
   fill(170, 210, 240);
   rect(width/2 - width/5/2, height/60, width/5, height/10, 10);
   textSize(height/30);
-  fill(150);
+  fill(78);
   text("Test algoritmerne", width/2 - width/5/2, height/60, width/5, height/10);
 
   //tegner beskrivelserne af algoritmerne
   fill(0);
   text(algoritmer[valgtAlgoritme1].beskrivelse, 3 * width/20 + 2 * width/80, height/60, width/5, height/4);
   text(algoritmer[valgtAlgoritme2].beskrivelse, width - (3 * width/20 + 2 * width/80), height/60, -width/5, height/4);
+
 }

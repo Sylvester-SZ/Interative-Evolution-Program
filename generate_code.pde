@@ -28,160 +28,172 @@ boolean canRunProcessingJava() {
 }
 
 
-void generateCode() {
-  ArrayList<String> result = new ArrayList<String>();
-  result.add("void setup() {");
-  result.add("  size(400, 400);");
-  result.add("  background(220);");
+String generateCode() {
+  StringBuilder codeBuilder = new StringBuilder();
+  codeBuilder.append("void setup() {\n");
+  codeBuilder.append("  size(400, 400);\n");
+  codeBuilder.append("  background(220);\n");
 
-  // Only process top-level blocks (no parent and not pickers)
+  // Process all non-picker blocks in order of their position (top to bottom)
+  ArrayList<Block> sortedBlocks = new ArrayList<Block>();
   for (Block block : blocks) {
-    if (!block.picker && block.parent == null) {
-      result.add(generateBlockCode(block, 1));
+    if (!block.picker) {
+      sortedBlocks.add(block);
     }
   }
-
-  result.add("}");
-
-  // Debug output
-  println("Generated code:");
-  for (String line : result) {
-    println(line);
+  
+  // Sort blocks by Y position (top to bottom)
+  sortedBlocks.sort((a, b) -> Float.compare(a.y, b.y));
+  
+  // First pass - identify standalone blocks and starting blocks
+  ArrayList<Block> processedBlocks = new ArrayList<Block>();
+  for (Block block : sortedBlocks) {
+    // Skip if this block is part of a chain but not the starting block
+    boolean isNonStartingChainBlock = false;
+    for (Block other : sortedBlocks) {
+      if (other != block && other.connectedBlocks.contains(block)) {
+        isNonStartingChainBlock = true;
+        break;
+      }
+    }
+    
+    if (!isNonStartingChainBlock) {
+      String blockCode = processBlock(block, 1);
+      if (!blockCode.isEmpty()) {
+        codeBuilder.append(blockCode).append("\n");
+        processedBlocks.add(block);
+      }
+    }
   }
-
-  saveStrings("generated_code/generated_code.pde", result.toArray(new String[0]));
+  
+  codeBuilder.append("}\n");
+  return codeBuilder.toString();
 }
 
 
-String generateBlockCode(Block block, int indentLevel) {
-  if (block.picker) {
-    return "";
-  }
 
+String processBlock(Block block, int indentLevel) {
   String indent = getIndent(indentLevel);
   StringBuilder codeBuilder = new StringBuilder();
-
-  // Process this block
+  
   if (block.label.equals("Cooperate")) {
     codeBuilder.append(indent + "delay(100);\n");
     codeBuilder.append(indent + "background(color(0, 255, 0));");
-  } else if (block.label.equals("Defect")) {
+  } 
+  else if (block.label.equals("Defect")) {
     codeBuilder.append(indent + "delay(100);\n");
     codeBuilder.append(indent + "background(color(255, 0, 0));");
-  } else if (block.label.equals("Spacer")) {
-    // Spacer doesn't generate any code but may have children
-    ArrayList<Block> children = block.getChildBlocks();
-    if (!children.isEmpty()) {
-      for (Block child : children) {
-        String childCode = generateBlockCode(child, indentLevel);
-        if (!childCode.isEmpty()) {
-          codeBuilder.append(childCode).append("\n");
+  } 
+  else if (block.label.equals("Spacer")) {
+    // Spacer doesn't generate code
+    return "";
+  } 
+  else if (block.label.equals("Repeat")) {
+    // Process the full horizontal chain to find parameters and actions
+    ArrayList<Block> chain = new ArrayList<>();
+    chain.add(block);
+    
+    // Add all directly connected blocks to the chain
+    for (Block connected : block.connectedBlocks) {
+      chain.add(connected);
+      
+      // Add blocks connected to this one (assuming a maximum chain length)
+      for (Block secondLevel : connected.connectedBlocks) {
+        if (!chain.contains(secondLevel)) {
+          chain.add(secondLevel);
         }
       }
     }
-  } else if (block.label.startsWith("Repeat")) {
-    // Get all connected blocks for this Repeat block
-    ArrayList<Block> connectedBlocks = block.connectedBlocks;
-
-    // Default repeat count
-    int repeatCount = 5;
-
-    // Look for a numeric block (like 5x, 10x, 20x) directly connected to Repeat
-    for (Block connected : connectedBlocks) {
-      if (connected.label.contains("x")) {
-        repeatCount = connected.getNumericValue();
-        break;
-      }
-    }
-
-    codeBuilder.append(indent + "for (int i = 0; i < " + repeatCount + "; i++) {");
-
-    // Find the action block (should be the second connected block or after numeric block)
+    
+    // Find repeat count and action blocks
+    int repeatCount = 5; // Default
     Block actionBlock = null;
-    for (Block connected : connectedBlocks) {
-      if (!connected.label.contains("x")) {
-        actionBlock = connected;
-        break;
+    
+    for (Block chainBlock : chain) {
+      if (chainBlock.label.contains("x")) {
+        repeatCount = chainBlock.getNumericValue();
+      } 
+      else if (chainBlock.label.equals("Cooperate") || chainBlock.label.equals("Defect")) {
+        actionBlock = chainBlock;
       }
     }
-
-    // If no specific action block found, look for child blocks
-    if (actionBlock == null) {
-      ArrayList<Block> children = block.getChildBlocks();
-      for (Block child : children) {
-        if (!child.label.contains("x")) {
-          actionBlock = child;
-          break;
-        }
-      }
-    }
-
-    // Process the action block
+    
+    codeBuilder.append(indent + "for (int i = 0; i < " + repeatCount + "; i++) {\n");
+    
     if (actionBlock != null) {
-      codeBuilder.append("\n");
-      codeBuilder.append(generateBlockCode(actionBlock, indentLevel + 1)).append("\n");
-      codeBuilder.append(indent);
+      codeBuilder.append(processBlock(actionBlock, indentLevel + 1)).append("\n");
     }
-
-    codeBuilder.append("}");
-  } else if (block.label.equals("If")) {
-    // Handle If block with condition and executable blocks
-    ArrayList<Block> connectedBlocks = block.connectedBlocks;
-
-    // We need: value1, operator, value2, action
+    
+    codeBuilder.append(indent + "}");
+  } 
+  else if (block.label.equals("If")) {
+    // Process the full horizontal chain to find all parts of the if statement
+    ArrayList<Block> chain = new ArrayList<>();
+    chain.add(block);
+    
+    // Build the complete chain of horizontally connected blocks
+    ArrayList<Block> processed = new ArrayList<>();
+    processed.add(block);
+    buildCompleteChain(block, chain, processed);
+    
+    // Extract the components from the chain
     Block value1 = null;
     Block operator = null;
     Block value2 = null;
     Block actionBlock = null;
-
-    // Try to identify the components from connected blocks
-    for (Block connected : connectedBlocks) {
-      if (connected.label.contains("x") && value1 == null) {
-        value1 = connected;
-      } else if ((connected.label.equals("<") || connected.label.equals(">") || connected.label.equals("==")) && operator == null) {
-        operator = connected;
-      } else if (connected.label.contains("x") && value1 != null && value2 == null) {
-        value2 = connected;
-      } else if (!connected.label.contains("x") && !connected.label.equals("<") &&
-        !connected.label.equals(">") && !connected.label.equals("==")) {
-        actionBlock = connected;
+    
+    for (Block chainBlock : chain) {
+      if (chainBlock.label.contains("x") && value1 == null) {
+        value1 = chainBlock;
+      }
+      else if ((chainBlock.label.equals("<") || chainBlock.label.equals(">") || chainBlock.label.equals("==")) && operator == null) {
+        operator = chainBlock;
+      }
+      else if (chainBlock.label.contains("x") && value1 != null && value2 == null) {
+        value2 = chainBlock;
+      }
+      else if (chainBlock.label.equals("Cooperate") || chainBlock.label.equals("Defect")) {
+        actionBlock = chainBlock;
       }
     }
-
-    // If we have the required components, generate the if statement
+    
+    // Generate the if statement code
     if (value1 != null && operator != null && value2 != null) {
       int val1 = value1.getNumericValue();
       int val2 = value2.getNumericValue();
       String op = operator.label;
-
-      codeBuilder.append(indent + "if (" + val1 + " " + op + " " + val2 + ") {");
-
-      // Process the action block
+      
+      codeBuilder.append(indent + "if (" + val1 + " " + op + " " + val2 + ") {\n");
+      
       if (actionBlock != null) {
-        codeBuilder.append("\n");
-        codeBuilder.append(generateBlockCode(actionBlock, indentLevel + 1)).append("\n");
-        codeBuilder.append(indent);
+        codeBuilder.append(processBlock(actionBlock, indentLevel + 1)).append("\n");
       }
-
-      codeBuilder.append("}");
+      
+      codeBuilder.append(indent + "}");
     } else {
       codeBuilder.append(indent + "// Incomplete If statement - missing condition or executable blocks");
     }
-  } else if (block.label.contains("x")) {
-    // Numeric blocks should be handled by their parent blocks, not individually
-    // But we could add a comment for debugging
-    codeBuilder.append(indent + "// Numeric value: " + block.getNumericValue());
-  } else if (block.label.equals("<") || block.label.equals(">") || block.label.equals("==")) {
-    // Operator blocks should be handled by their parent blocks, not individually
-    // But we could add a comment for debugging
-    codeBuilder.append(indent + "// Operator: " + block.label);
-  } else {
+  } 
+  else if (block.label.contains("x") || block.label.equals("<") || block.label.equals(">") || block.label.equals("==")) {
+    // These blocks should be handled by their parent blocks, not directly
+    return "";
+  } 
+  else {
     codeBuilder.append(indent + "// Unknown block type: " + block.label);
   }
-
+  
   return codeBuilder.toString();
 }
 
+void buildCompleteChain(Block start, ArrayList<Block> chain, ArrayList<Block> processed) {
+  for (Block connected : start.connectedBlocks) {
+    if (!processed.contains(connected)) {
+      chain.add(connected);
+      processed.add(connected);
+      buildCompleteChain(connected, chain, processed);
+    }
+  }
+}
 
 String getIndent(int indentLevel) {
   StringBuilder indent = new StringBuilder();
@@ -193,15 +205,23 @@ String getIndent(int indentLevel) {
 
 
 void runCode() {
-  parseCode();
   if (canRunProcessingJava()) {
-    generateCode();
-
+    // Generate the code as a string first for debugging
+    String generatedCode = generateCode();
+    println("Generated code:");
+    println(generatedCode);
+    
+    // Save the generated code
+    String[] codeLines = generatedCode.split("\n");
+    saveStrings("generated_code/generated_code.pde", codeLines);
+    
+    // Run the code
     exec("processing-java", "--sketch=" + sketchPath("generated_code"), "--run");
   } else {
-    println("Din computer har ikke processing i dens systemvaribler. Dette skyldes at du ikke bruger den rigtige version af Processing. Brug venligst version 4.3");
+    println("Your computer doesn't have processing in its system variables. This is because you're not using the right version of Processing. Please use version 4.3");
   }
 }
+
 
 
 void parseCode() {

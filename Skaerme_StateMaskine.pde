@@ -97,8 +97,26 @@ void BygSelvSkaerm() {
   //==========================================================================================forklarende tekst til byg selv skærmen===============
   textSize(width/60); 
   fill(50);
-  text("Tryk på en ønsket blok. Drag den ud på midten og tilføj andre blokke ved at sætte dem under (den snapper fast)", width/1.84, height/20); //forklarende i byg selv
+  text("Tryk på en ønsket blok. Drag den ud på midten og tilføj andre blokke ved at sætte dem under (blokkene snapper fast)", width/1.84, height/1.05); //forklarende i byg selv
+  //==========================================================================================overskrift til byg selv skærmen===============
+    textSize(width/30);
+    text("Velkommen til: Byg Din Egen Algoritme", width/1.84, height/15);
+    //==========================================================================================Forklaring r og c===============
+    
+    textSize(width/80);
+    text("!! r kører din algoritme!! ", width/1.84, height/6.7);
+    text("!! c sletter alt på skærmen!! ", width/1.84, height/8.5);
   //================================================================================================================================================
+   //========================================================================================= knap der fører til en skærm med gode råd ==========
+  strokeWeight(5); //sætter tykkelsen på stregen rundt i rektanglen til 5 pixels
+  stroke(50);
+  fill(150);
+  textAlign(CENTER,CENTER);
+  textSize(width/100);
+  rect(width-width/14, 0, width/14, height/14);
+  fill(50);
+  text("Guide", width-width/14/2, height/14/2);
+  fill(0);
 }
 
 
@@ -106,7 +124,10 @@ void BygSelvSkaerm() {
 void ResultatSkaerm() {
   nytabel.tabelVisuel();
   nytabel.indsaetDataTabel();
-  
+  //==========================================================================================overskrift til byg selv skærmen===============
+    fill(50);
+    textSize(width/35);
+    text("Point Fordeling:", width/1.84, height/1.9);
   //========================================================================================= knap der fører til hjemmeskærm====================
   strokeWeight(5); //sætter tykkelsen på stregen rundt i rektanglen til 5 pixels
   stroke(50);
@@ -141,6 +162,11 @@ void ResultatSkaerm() {
 
 
 void GodeRaedSkaerm(){
+  
+  //======================================================================overskrift til gode råd ===============================================
+  fill(50);
+  textSize(width/30);
+  text("Velkommen til: Råd til at forstå programmet", width/1.84, height/15);
   //=================================================================== forklarende tips på gode råd skærmen ===================================
   textSize(width/50); 
   fill(50);
@@ -164,4 +190,42 @@ void GodeRaedSkaerm(){
   text("Tilbage", width/14/2, height/14/2);
   fill(0);
   //===========================================================================================================================================
+}
+
+void BygSelvForklaringSkaerm(){
+  //================================================================================ knap der fører tilbage til byg selv skærm ============
+  strokeWeight(5); //sætter tykkelsen på stregen rundt i rektanglen til 5 pixels
+  stroke(50);
+  fill(150);
+  textAlign(CENTER,CENTER);
+  textSize(width/100);
+  rect(0, 0, width/14, height/14);
+  fill(50);
+  text("Tilbage", width/14/2, height/14/2);
+  fill(0);
+  //===========================================================================================================================================
+  
+  //=================================================================== forklarende tips på og gode råd til byg selv ===========================
+  fill(50);
+  
+  textSize(width/30);
+  text("Byg Selv Guide",width/2,height/14);
+  
+  textSize(width/60); 
+  text("Du skal her lave din egen algoritme som du bagefter kan teste mod andre præprogrammerede algoritmer.", width/2, height/5.5);
+  text("Du er selvfølgelig en mester i det her, og du skal jo prøve at vinde. Måske du skulle teste andre algoritmer først? og få idéer", width/2, height/4.4);
+  
+  textSize(width/80); 
+  text("For at lave din egen algoritme skal du bruge blokkodning. Spacer sættes under repeat. Antal gange sættes til højre for repeat samt handlingen til højre", width/2, height/3.7);
+  textSize(width/50); 
+  text("Øvelse: lav funktionen: if, opponent, defect, cooporate, else, defect", width/2, height/2.6);
+  textSize(width/60); 
+  text("Denne øvelse vil give en algoritme som ser på om modstandenren ikke samarbejder, og hvis ja, så samarbejder den selv.", width/2, height/2.3);
+  text("Hvis modstanderen samarbejder, så samarbejder denne funktion ikke.", width/2, height/2.1);
+  text("Du hiver bare blokkene over og sætter dem til højre for hinanden i den givne rækkefølge.", width/2, height/1.9);
+
+  textSize(width/50); 
+  text("Advarsel", width/2, height/1.5);
+  textSize(width/80); 
+  text("Du skal bare vide at nogle kombinationer af kode kan crashe programmet. Undgå udsagn hvor algoritmen står uden en klar definition på hvad den skal gøre i et tilfælde", width/2, height/1.4);
 }

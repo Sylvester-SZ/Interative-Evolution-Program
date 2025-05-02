@@ -94,6 +94,9 @@ void draw() { //mouse released interrupter draw funktionen så uden den fungere 
   case 5:
     GodeRaedSkaerm();
     break;
+  case 6:
+    BygSelvForklaringSkaerm();
+    break;
   }
 }
 
@@ -128,7 +131,13 @@ void mouseReleased() {
   if (hitbox(0, 0, width/14, height/14, 5)) {
     skaermState = 4;
   }
+  if (hitbox(width-width/14,0, width/14, height/14, 3)) {
+    skaermState = 6;
+  }
   if (hitbox(width-width/14, 0, width/14, height/14, 4)) {
     skaermState = 5;
+  }
+  if (hitbox(0, 0, width/14, height/14, 6)) {
+    skaermState = 3;
   }
 }

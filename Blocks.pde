@@ -18,7 +18,7 @@ class Block {
   }
 
   void display() {
-    fill(dragging ? color(200, 200, 255) : color(150, 150, 250));
+    fill(dragging ? color(220, 260, 290) : color(170, 210, 240));
     rect(x, y, w, h, 5);
     fill(0);
     textAlign(CENTER, CENTER);

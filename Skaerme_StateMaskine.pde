@@ -76,6 +76,8 @@ void AlgoritmeSkaerm() {
 
 void BygSelvSkaerm() {
   background(220);
+  strokeWeight(5); //sætter tykkelsen på stregen rundt i rektanglen til 5 pixels
+  stroke(50);
   fill(190);
   rect(0,0,width/10,height);
   for (int i = 0; i < blocks.size(); i++) {
@@ -91,7 +93,11 @@ void BygSelvSkaerm() {
   fill(50);
   text("Hjemmeskaerm", width/14/2, height/14/2);
   fill(0);
-  //===========================================================================================================================================
+  //==========================================================================================forklarende tekst til byg selv skærmen===============
+  textSize(width/60); 
+  fill(50);
+  text("Tryk på en ønsket blok. Drag den ud på midten og tilføj andre blokke ved at sætte dem under (den snapper fast)", width/1.84, height/20); //forklarende i byg selv
+  //================================================================================================================================================
 }
 
 
@@ -134,7 +140,8 @@ void ResultatSkaerm() {
 
 
 void GodeRaedSkaerm(){
-  textSize(width/50);
+  //=================================================================== forklarende tips på gode råd skærmen ===================================
+  textSize(width/50); 
   fill(50);
   text("Hvis du som bruger undersøger nok algoritmer vil du indse at samarbejde er den smarteste strategi", width/2, height/5.5);
   text("Hvis du spiller egoistisk og aldrig samarbejder er der for stor chance for at to algoritmer altid", width/2, height/4.4);

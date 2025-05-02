@@ -1,4 +1,7 @@
 ArrayList<Float> heights = new ArrayList<Float>();
+//String algoritmekode = ("boolean resultat;  //det sidste resultat der er udregnetint runde = 0;  // hvilken runde vi er på//lav alle algoritme objekterneSoedAlgoritme soedAlgoritme = new SoedAlgoritme();OndAlgoritme ondAlgoritme = new OndAlgoritme();Random random = new Random();Copycat copycat = new Copycat();class Algoritmer {  //klassen der opbevarer vores algoritmer  String navn; //navnet på algoritmen  boolean soed; //om algoritmen er soed i første runde  Algoritmer() {    //alt der skal være i construkteren  }      boolean spil(Table resultater, boolean spiller1) { //metoder der finder ud af hvad en algoritme vil gørereturn (resultat); //returnere hvad den fandt ud af    }          boolean erSoed() {    return (soed);  }      String navn() {    return (navn);      }  }/*======================================= ny algoritme =============================================*/class SoedAlgoritme extends Algoritmer {  //en algoritme der altid er sød  SoedAlgoritme () {    navn = "Sød algoritme";    soed = true;  //den er som sagt sød  }  boolean spil(Table resultater, boolean spiller1) { //grunden til at der er ubrugte indput er så der ikke kommer en error hvis metoden senere bliver kaldt i et for loop med input den ikke bruger    resultat = true;  //den returneere altid true fordi den altid samarbejder    return(resultat);  }  boolean erSoed() {    return (soed);  }  String navn() {    return (navn);      }}/*=======================================ny algoritme=============================================*/class OndAlgoritme extends Algoritmer {  //en algoritme der aldrig samarbejder  OndAlgoritme () {    navn = "Ond algoritme";    soed = false;  //den er som sagt ikke sød  }  boolean spil(Table resultater, boolean spiller1) {    resultat = false;  //den returneere altid false fordi den aldrig samarbejder    return(resultat);  }  boolean erSoed() {    return (soed);  }  String navn() {    return (navn);  }}/*======================================= ny algoritme =============================================*/class Random extends Algoritmer {  //en algoritme der samarbejder tilfældigt  Random () {    navn = "Tilfældig algoritme";    soed = true;  //den vil ikke (nødvendigvis) gå efter at samarbejde i første runde  }  boolean spil(Table resultater, boolean spiller1) {    if (int(random(2)) == 0) { //50/50 chance      resultat = true;  //tilfældigt output    } else {      resultat = false;    }    return(resultat);  }  boolean erSoed() {    return (soed);  }  String navn() {    return (navn);  }}/*=======================================ny algoritme=============================================*/class Copycat extends Algoritmer {  //en algoritme der gør hvad modstanderen gjorde sidst  Copycat() {    navn = "Copycat";    soed = true;  //den starter med at være sød fordi modstanderen ikke har gjort noget endnu  }  boolean spil(Table resultater, boolean spiller1) {    if (runde == 0) {  //hvis det er første runde      resultat = true;   //samarbejd    } else if (spiller1) { //ellers hvis de er spiller 1      if (boolean(resultater.getInt(runde-1, 3))) { //tjek modstanderens sidste træk i tabellen        resultat = true; //hvis de samarbejdede så samarbejd      } else {        resultat = false; // ellers lad vær      }    } else { //hvis de er spiller 2      if (boolean(resultater.getInt(runde-1, 2))) { //tjek spiller 1 sidste træk        //gør det samme som de gjorde        resultat = true;      } else {        resultat = false;      }    }    return(resultat);  }  boolean erSoed() {    return (soed);  }  String navn() {    return (navn);  }}");
+String[] linjer;
+String sending;
 
 //Lavet ved hjælp af AI. Forsøger at køre processing-java --version, i terminalen for at sikre at processing kan køres igennem consollen.
 boolean canRunProcessingJava() {
@@ -30,12 +33,14 @@ boolean canRunProcessingJava() {
 //Funktionen der generere koden som vi launcher i et nyt vindue. Lavet i samarbejde med AI, dog med stor egen biddragelse
 String generateCode() {
   StringBuilder codeBuilder = new StringBuilder();
-  codeBuilder.append("void setup() {\n");
-  codeBuilder.append("  size(400, 400);\n");
-  codeBuilder.append("  background(220);\n");
+  for (String linje : linjer) {
+    codeBuilder.append(linje + "\n");
+  }
 
-  codeBuilder.append("  int opponentChoice = 0; // Default to defect (0)\n");
-  codeBuilder.append("  int playerChoice = 1; // Default to cooperate (1)\n\n");
+  codeBuilder.append("boolean bygselvspil(Table resultater) {\n");
+  codeBuilder.append("int opponentChoice = resultater.getInt(runde, 3); \n");
+  codeBuilder.append("int playerChoice = resultater.getInt(runde, 2); \n");
+  codeBuilder.append("boolean res = false;\n");
 
   ArrayList<Block> sortedBlocks = new ArrayList<Block>();
   for (Block block : blocks) {
@@ -65,7 +70,7 @@ String generateCode() {
       }
     }
   }
-
+  codeBuilder.append("return res;\n");
   codeBuilder.append("}\n");
   return codeBuilder.toString();
 }
@@ -75,26 +80,21 @@ String generateCode() {
 String processBlock(Block block, int indentLevel) {
   String indent = getIndent(indentLevel);
   StringBuilder codeBuilder = new StringBuilder();
-  
+
   if (block.label.equals("Cooperate")) {
-    codeBuilder.append(indent + "delay(100);\n");
-    codeBuilder.append(indent + "background(color(0, 255, 0));");
-  } 
-  else if (block.label.equals("Defect")) {
-    codeBuilder.append(indent + "delay(100);\n");
-    codeBuilder.append(indent + "background(color(255, 0, 0));");
-  } 
-  else if (block.label.equals("Spacer")) {
+    codeBuilder.append(indent + "res = false;\n");
+  } else if (block.label.equals("Defect")) {
+    codeBuilder.append(indent + "res = true;\n");
+  } else if (block.label.equals("Spacer")) {
     return "";
-  } 
-  else if (block.label.equals("Repeat")) {
+  } else if (block.label.equals("Repeat")) {
     ArrayList<Block> chain = new ArrayList<>();
     chain.add(block);
-    
+
 
     for (Block connected : block.connectedBlocks) {
       chain.add(connected);
-      
+
 
       for (Block secondLevel : connected.connectedBlocks) {
         if (!chain.contains(secondLevel)) {
@@ -102,79 +102,98 @@ String processBlock(Block block, int indentLevel) {
         }
       }
     }
-    
+
     int repeatCount = 5;
     Block actionBlock = null;
-    
+
     for (Block chainBlock : chain) {
       if (chainBlock.label.contains("x")) {
         repeatCount = chainBlock.getNumericValue();
-      } 
-      else if (chainBlock.label.equals("Cooperate") || chainBlock.label.equals("Defect")) {
+      } else if (chainBlock.label.equals("Cooperate") || chainBlock.label.equals("Defect")) {
         actionBlock = chainBlock;
       }
     }
-    
+
     codeBuilder.append(indent + "for (int i = 0; i < " + repeatCount + "; i++) {\n");
-    
+
     if (actionBlock != null) {
       codeBuilder.append(processBlock(actionBlock, indentLevel + 1)).append("\n");
     }
-    
+
     codeBuilder.append(indent + "}");
-  } 
-  else if (block.label.equals("If")) {
+  } else if (block.label.equals("If")) {
+    // Process the full horizontal chain to find all parts of the if statement
     ArrayList<Block> chain = new ArrayList<>();
     chain.add(block);
-    
+
+    // Build the complete chain of horizontally connected blocks
     ArrayList<Block> processed = new ArrayList<>();
     processed.add(block);
     buildCompleteChain(block, chain, processed);
-    
+
+    // Extract the components from the chain
     Block value1 = null;
     Block operator = null;
     Block value2 = null;
     Block actionBlock = null;
-    
+    Block elseBlock = null;
+    Block elseActionBlock = null;
+
     for (Block chainBlock : chain) {
       if ((chainBlock.label.contains("x") || chainBlock.isVariable()) && value1 == null) {
         value1 = chainBlock;
-      }
-      else if ((chainBlock.label.equals("<") || chainBlock.label.equals(">") || chainBlock.label.equals("==")) && operator == null) {
+      } else if ((chainBlock.label.equals("<") || chainBlock.label.equals(">") || chainBlock.label.equals("==")) && operator == null) {
         operator = chainBlock;
-      }
-      else if ((chainBlock.label.contains("x") || chainBlock.isVariable()) && value1 != null && value2 == null) {
+      } else if ((chainBlock.label.contains("x") || chainBlock.isVariable()) && value1 != null && value2 == null) {
         value2 = chainBlock;
-      }
-      else if (chainBlock.label.equals("Cooperate") || chainBlock.label.equals("Defect")) {
-        actionBlock = chainBlock;
+      } else if (chainBlock.label.equals("Cooperate") || chainBlock.label.equals("Defect")) {
+        // If we already found the Else block, this is the else action
+        if (elseBlock != null && elseActionBlock == null) {
+          elseActionBlock = chainBlock;
+        } else if (actionBlock == null) {
+          actionBlock = chainBlock;
+        }
+      } else if (chainBlock.label.equals("Else")) {
+        elseBlock = chainBlock;
       }
     }
-    
-    // (Opbygningen af vores if statement)
+
+    // Generate the if statement code
     if (value1 != null && operator != null && value2 != null) {
       String val1 = value1.isVariable() ? value1.getVariableName() : Integer.toString(value1.getNumericValue());
       String val2 = value2.isVariable() ? value2.getVariableName() : Integer.toString(value2.getNumericValue());
       String op = operator.label;
-      
+
       codeBuilder.append(indent + "if (" + val1 + " " + op + " " + val2 + ") {\n");
-      
+
       if (actionBlock != null) {
         codeBuilder.append(processBlock(actionBlock, indentLevel + 1)).append("\n");
       }
-      
+
       codeBuilder.append(indent + "}");
+
+      // Add else block if present
+      if (elseBlock != null) {
+        codeBuilder.append(" else {\n");
+
+        if (elseActionBlock != null) {
+          codeBuilder.append(processBlock(elseActionBlock, indentLevel + 1)).append("\n");
+        }
+
+        codeBuilder.append(indent + "}");
+      }
     } else {
       codeBuilder.append(indent + "// Incomplete If statement - missing condition or executable blocks");
     }
-  } 
-  else if (block.label.contains("x") || block.label.equals("<") || block.label.equals(">") || block.label.equals("==") || block.isVariable()) {
+  } else if (block.label.equals("Else")) {
+    // Else blocks are handled within the If block processing
     return "";
-  } 
-  else {
+  } else if (block.label.contains("x") || block.label.equals("<") || block.label.equals(">") || block.label.equals("==") || block.isVariable()) {
+    return "";
+  } else {
     codeBuilder.append(indent + "// Unknown block type: " + block.label);
   }
-  
+
   return codeBuilder.toString();
 }
 
@@ -200,7 +219,7 @@ String getIndent(int indentLevel) {
 
 
 
-//Dette er funktionen der kører koden. For debugging's skyld, så printer den lige den genereret kode, 
+//Dette er funktionen der kører koden. For debugging's skyld, så printer den lige den genereret kode,
 //ellers kan den også findes inde i mappen "generated_code"
 //Udover bare at køre koden, så kører den også vores funktion fra tidligere, for at sikre at processing kan køres.
 void runCode() {

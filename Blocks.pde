@@ -142,6 +142,12 @@ class Block {
   }
 }
 
+void clearScreen() {
+  for (int i = blocks.size()-1; i>14; i--) {
+    blocks.remove(i);
+  }
+}
+
 String[] codeLines;
 
 //Funktion forslået af AI. Den gør detection af blokke mere præcis når man kigger igennem alle de connected blocks
